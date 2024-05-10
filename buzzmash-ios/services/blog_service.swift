@@ -19,6 +19,8 @@ protocol BlogApiServiceProtocol {
 
 
 final class BlogApiService:BlogApiServiceProtocol {
+
+    
    
     
   
@@ -28,6 +30,7 @@ final class BlogApiService:BlogApiServiceProtocol {
     private var cancellable: AnyCancellable?
     @Published var blogCategory:GetBlogCategory?
     @Published var blogFeed:BlogFeed?
+    
     @Published var newBlog:NewBlog?
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
@@ -123,5 +126,7 @@ final class BlogApiService:BlogApiServiceProtocol {
         
         
     }
+    
+ 
     
 }

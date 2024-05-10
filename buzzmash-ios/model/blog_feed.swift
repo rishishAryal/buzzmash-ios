@@ -40,3 +40,7 @@ struct NewBlog: Codable {
 
 // MARK: - Blog
 
+struct DeleteBlog: Codable {
+    let message: String
+    let success: Bool
+}

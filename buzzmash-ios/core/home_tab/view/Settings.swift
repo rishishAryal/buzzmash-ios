@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct Settings: View {
+    @ObservedObject var authVm: AuthViewModel
+
     var body: some View {
         VStack {
             
@@ -24,6 +26,12 @@ struct Settings: View {
                     Image(systemName: "door.sliding.right.hand.open")
                     Text("Logout")
                     Spacer()
+                        
+                }.contentShape(RoundedRectangle(cornerRadius: 10))
+
+                .onTapGesture {
+                        authVm.logout()
+                    
                 }
             }.listStyle(.automatic)
            
@@ -33,8 +41,4 @@ struct Settings: View {
         
         
     }
-}
-
-#Preview {
-    Settings()
 }

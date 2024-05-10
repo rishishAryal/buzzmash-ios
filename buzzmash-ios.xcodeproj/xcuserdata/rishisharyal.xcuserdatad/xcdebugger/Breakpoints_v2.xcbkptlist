@@ -158,8 +158,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/profile_viewmodel.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "41"
-            endingLineNumber = "41"
+            startingLineNumber = "52"
+            endingLineNumber = "52"
             landmarkName = "getUserProfile()"
             landmarkType = "7">
          </BreakpointContent>

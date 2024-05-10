@@ -135,7 +135,13 @@ struct AddBlog: View {
  
             } label: {
                 RoundedRectangle(cornerRadius: 10).frame(height: 50).overlay {
-                    Text("Create").foregroundStyle(.white)
+                    if blogVM.isLoading {
+                        ProgressView()
+                    } else {
+                        Text("Create").foregroundStyle(.white)
+                    }
+                    
+                   
                 }.padding(.horizontal).padding(.vertical,15)
             }
 

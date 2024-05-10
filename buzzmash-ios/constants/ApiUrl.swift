@@ -15,6 +15,7 @@ class ApiUrl {
     
     static let getBlogCategory = baseUrl + "blog/getCategory"
     static let getBlogFeed = baseUrl + "blog/getBlogFeed"
+    static let getUserBlogs = baseUrl + "blog/getUserBlogs"
     static let login = baseUrl + "user/login"
     static let fetchProfile = baseUrl + "user/profile"
     static let createBlog = baseUrl + "blog/create-blog"

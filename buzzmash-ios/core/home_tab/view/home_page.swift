@@ -11,6 +11,22 @@ struct FeedView:View {
     @ObservedObject var blogVM:BlogViewModel
     @State var selectedId:String = "all"
     @Namespace var namesapce
+    
+    
+    
+     // This ensures the date format is interpreted correctly
+    
+    func convertToDate(from dateString: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
+        dateFormatter.locale = Locale(identifier: "en_US_POSIX")  // Set to POSIX to avoid any locale-specific issues.
+        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)      // Optional: Adjust time zone if necessary.
+        return dateFormatter.date(from: dateString)
+    }
+
+
+    
+    
     var body: some View {
         VStack {
             HStack{
@@ -79,7 +95,7 @@ struct FeedView:View {
                 } else {
                    
                     ScrollView {
-                        ForEach(blogVM.requiredBlogFeed, id: \.id) {blog in
+                        ForEach(blogVM.requiredBlogFeed.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
                             
                             VStack {
                                 HStack {
@@ -149,4 +165,5 @@ struct FeedView:View {
         }
 
     }
+  
 }
