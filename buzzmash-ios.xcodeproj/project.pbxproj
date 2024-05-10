@@ -35,6 +35,10 @@
 		2913F5812BED0DC2008259C9 /* user_repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2913F5802BED0DC2008259C9 /* user_repo.swift */; };
 		2913F5832BED35BC008259C9 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2913F5822BED35BC008259C9 /* Settings.swift */; };
 		2913F5852BED3779008259C9 /* AddBlog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2913F5842BED3779008259C9 /* AddBlog.swift */; };
+		291E907C2BEE327900331195 /* EditBlogView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907B2BEE327900331195 /* EditBlogView.swift */; };
+		291E907E2BEE33BF00331195 /* app_init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907D2BEE33BF00331195 /* app_init.swift */; };
+		291E90802BEE342C00331195 /* app_init_repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907F2BEE342C00331195 /* app_init_repo.swift */; };
+		291E90832BEE34D400331195 /* AppInitVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90822BEE34D400331195 /* AppInitVM.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -68,6 +72,10 @@
 		2913F5802BED0DC2008259C9 /* user_repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = user_repo.swift; sourceTree = "<group>"; };
 		2913F5822BED35BC008259C9 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		2913F5842BED3779008259C9 /* AddBlog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddBlog.swift; sourceTree = "<group>"; };
+		291E907B2BEE327900331195 /* EditBlogView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditBlogView.swift; sourceTree = "<group>"; };
+		291E907D2BEE33BF00331195 /* app_init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init.swift; sourceTree = "<group>"; };
+		291E907F2BEE342C00331195 /* app_init_repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init_repo.swift; sourceTree = "<group>"; };
+		291E90822BEE34D400331195 /* AppInitVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInitVM.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +108,7 @@
 		2913F5352BECD931008259C9 /* buzzmash-ios */ = {
 			isa = PBXGroup;
 			children = (
+				291E90812BEE34C500331195 /* helpers */,
 				2913F5672BECF496008259C9 /* auth */,
 				2913F54C2BECDC1A008259C9 /* constants */,
 				2913F54B2BECDA4A008259C9 /* model */,
@@ -147,6 +156,7 @@
 				2913F55A2BECDE6F008259C9 /* blog_service.swift */,
 				2913F56F2BECF9E7008259C9 /* auth_Service.swift */,
 				2913F57C2BED0C75008259C9 /* user_profile.swift */,
+				291E907D2BEE33BF00331195 /* app_init.swift */,
 			);
 			path = services;
 			sourceTree = "<group>";
@@ -157,6 +167,7 @@
 				2913F5612BECE03B008259C9 /* blog_repo.swift */,
 				2913F5732BECFDC1008259C9 /* auth_repo.swift */,
 				2913F5802BED0DC2008259C9 /* user_repo.swift */,
+				291E907F2BEE342C00331195 /* app_init_repo.swift */,
 			);
 			path = repository;
 			sourceTree = "<group>";
@@ -198,6 +209,7 @@
 				2913F5782BED0C23008259C9 /* profile_view.swift */,
 				2913F5822BED35BC008259C9 /* Settings.swift */,
 				2913F5842BED3779008259C9 /* AddBlog.swift */,
+				291E907B2BEE327900331195 /* EditBlogView.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -227,6 +239,14 @@
 				2913F5762BED022F008259C9 /* splahsScreen.swift */,
 			);
 			path = splash;
+			sourceTree = "<group>";
+		};
+		291E90812BEE34C500331195 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				291E90822BEE34D400331195 /* AppInitVM.swift */,
+			);
+			path = helpers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -307,15 +327,19 @@
 				2913F5622BECE03B008259C9 /* blog_repo.swift in Sources */,
 				2913F5692BECF4A9008259C9 /* login.swift in Sources */,
 				2913F57B2BED0C4E008259C9 /* profile_viewmodel.swift in Sources */,
+				291E907C2BEE327900331195 /* EditBlogView.swift in Sources */,
 				2913F5592BECDE38008259C9 /* category.swift in Sources */,
 				2913F5472BECDA0A008259C9 /* NetworkingManager.swift in Sources */,
 				2913F5832BED35BC008259C9 /* Settings.swift in Sources */,
+				291E90802BEE342C00331195 /* app_init_repo.swift in Sources */,
 				2913F5792BED0C23008259C9 /* profile_view.swift in Sources */,
 				2913F5722BECFA2A008259C9 /* Auth.swift in Sources */,
 				2913F5392BECD931008259C9 /* ContentView.swift in Sources */,
 				2913F55E2BECDF0E008259C9 /* genric_response_data.swift in Sources */,
 				2913F55B2BECDE6F008259C9 /* blog_service.swift in Sources */,
+				291E907E2BEE33BF00331195 /* app_init.swift in Sources */,
 				2913F5812BED0DC2008259C9 /* user_repo.swift in Sources */,
+				291E90832BEE34D400331195 /* AppInitVM.swift in Sources */,
 				2913F57D2BED0C75008259C9 /* user_profile.swift in Sources */,
 				2913F5372BECD931008259C9 /* buzzmash_iosApp.swift in Sources */,
 				2913F5642BECE0A4008259C9 /* blog.swift in Sources */,

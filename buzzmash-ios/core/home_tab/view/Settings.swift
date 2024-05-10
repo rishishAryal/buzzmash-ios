@@ -11,32 +11,34 @@ struct Settings: View {
     @ObservedObject var authVm: AuthViewModel
 
     var body: some View {
-        VStack {
-            
-            List {
-                HStack(spacing: 20){
-                    Image(systemName: "pencil")
-                    Text("Edit Profile")
-                    Spacer()
-            
-                }
+        NavigationStack{
+            VStack {
                 
+                List {
+                    HStack(spacing: 20){
+                        Image(systemName: "pencil")
+                        Text("Edit Profile")
+                        Spacer()
                 
-                HStack(spacing: 20) {
-                    Image(systemName: "door.sliding.right.hand.open")
-                    Text("Logout")
-                    Spacer()
-                        
-                }.contentShape(RoundedRectangle(cornerRadius: 10))
-
-                .onTapGesture {
-                        authVm.logout()
+                    }
                     
-                }
-            }.listStyle(.automatic)
-           
-           
-            Spacer()
+                    
+                    HStack(spacing: 20) {
+                        Image(systemName: "door.sliding.right.hand.open")
+                        Text("Logout")
+                        Spacer()
+                            
+                    }.contentShape(RoundedRectangle(cornerRadius: 10))
+
+                    .onTapGesture {
+                            authVm.logout()
+                        
+                    }
+                }.listStyle(.automatic)
+               
+               
+                Spacer()
+            }
         }
         
         

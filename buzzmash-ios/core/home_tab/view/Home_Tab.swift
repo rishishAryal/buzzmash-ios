@@ -36,7 +36,7 @@ struct HomeTab: View {
 
                         Text("Blog")
                     }
-                                            profile_view(authVm: authVm)
+                    profile_view(authVm: authVm, blogVM: blogVM)
                       
                 .tabItem {
                         Image(systemName: "person")

@@ -13,10 +13,14 @@ import SwiftUI
 
 
 struct SplashScreen: View {
+    @StateObject var appInitVM:AppInitVM = AppInitVM.appInitVM
     var body: some View {
         VStack {
-           Text("Buzzmash").font(.caption)
+           Text("Buzzmash").font(.largeTitle)
         }.foregroundStyle(.white).frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .background(LinearGradient(colors: [.blue.opacity(0.8), .green.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing)).ignoresSafeArea()
+            .onAppear(perform: {
+                appInitVM.getCategory()
+            })
     }
 }

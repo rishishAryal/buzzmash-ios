@@ -17,6 +17,8 @@ struct AddBlog: View {
     @State var showAlert:Bool = false
     @State var alertText:String = ""
     @State var alertColor:Color = .blue
+    var appInitVM:AppInitVM = AppInitVM.appInitVM
+
 
     var body: some View {
         VStack {
@@ -39,7 +41,7 @@ struct AddBlog: View {
                 Text("Some Famous Category").font(.footnote)
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack {
-                        ForEach(blogVM.requiredBlogCategory, id: \.id){cat in
+                        ForEach(appInitVM.requiredBlogCategory, id: \.id){cat in
                             
                             
                             

@@ -44,3 +44,10 @@ struct DeleteBlog: Codable {
     let message: String
     let success: Bool
 }
+
+
+struct AddBlogThumbnail: Codable {
+    let message: String
+    let success: Bool
+    let thumbnail: String
+}

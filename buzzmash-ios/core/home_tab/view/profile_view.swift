@@ -10,6 +10,7 @@ import SwiftUI
 struct profile_view: View {
     @ObservedObject var authVm: AuthViewModel
     @StateObject var userVm:UserViewModel = UserViewModel(userRepo: UserApiServiceRepo(userServiceRepo: UserApiService()))
+    @ObservedObject var blogVM:BlogViewModel
 
     
     var body: some View {
@@ -93,7 +94,7 @@ struct profile_view: View {
                
                
                 NavigationLink {
-                    DashboardView(userVm: userVm).navigationTitle("Dashboard")
+                    DashboardView(userVm: userVm, blogVM: blogVM).navigationTitle("Dashboard")
                 } label: {
                     HStack {
                         Image(systemName: "list.dash.header.rectangle")
@@ -118,7 +119,9 @@ struct DashboardView:View {
     @ObservedObject var userVm:UserViewModel
     @State var showDeleteAlert : Bool = false
     @State var blogID:String = ""
-    
+    @ObservedObject var blogVM:BlogViewModel
+    @State var thumbnail:String = ""
+
     func convertToDate(from dateString: String) -> Date? {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSZ"
@@ -127,57 +130,66 @@ struct DashboardView:View {
         return dateFormatter.date(from: dateString)
     }
     var body: some View {
-        VStack(spacing: 20) {
-            if(userVm.getBlogDashboardIsLoading) {
-                
-            } else {
-                ScrollView {
-                    ForEach(userVm.requiredBlogDashboard.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
-                        HStack {
-                            if(!blog.thumbnail.isEmpty) {
-                                AsyncImage(url: URL(string: blog.thumbnail)) { image in
-                                    image.resizable()
-                                        .aspectRatio(contentMode: .fill)
-                                        .frame(width: 100, height: 100)
-                                        .clipped()
-                                    
-                                } placeholder: {
-                                    Rectangle().foregroundStyle(.gray.opacity(0.2)) .frame(width: 100, height: 100)
-                                }
-                            }
-                        
-
-                            Text(blog.title.prefix(50))
-                            Spacer()
+        NavigationStack{
+            VStack(spacing: 20) {
+                if(userVm.getBlogDashboardIsLoading) {
+                    
+                } else {
+                    ScrollView {
+                        ForEach(userVm.requiredBlogDashboard.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
                             HStack {
-                                Button {
-                                    blogID = blog.id
-                                    withAnimation {
-                                        showDeleteAlert = true
+                                if(!blog.thumbnail.isEmpty) {
+                                    AsyncImage(url: URL(string: blog.thumbnail)) { image in
+                                        image.resizable()
+                                            .aspectRatio(contentMode: .fill)
+                                            .frame(width: 100, height: 100)
+                                            .clipped()
+                                        
+                                    } placeholder: {
+                                        Rectangle().foregroundStyle(.gray.opacity(0.2)) .frame(width: 100, height: 100)
+                                    }
+                                }
+                            
+
+                                Text(blog.title.prefix(50))
+                                Spacer()
+                                HStack {
+                                    Button {
+                                        blogID = blog.id
+                                        thumbnail = blog.thumbnail
+                                        withAnimation {
+                                            showDeleteAlert = true
+
+                                        }
+                                    
+                                    } label: {
+                                        Text("Delete").foregroundStyle(.white).padding(7).background(.red).clipShape(RoundedRectangle(cornerRadius: 10))
+                                    }
+                                    
+                                    NavigationLink {
+//                                        EditBlogView(blogVM: blogVM)
+                                        
+                                        EditBlogView(title: blog.title, desc: blog.description, category: blog.category, thumbnail: $thumbnail, author: blog.author, blogID: blog.id, blogVM: blogVM)
+                                        .navigationTitle("Edit Blog")
+                                    } label: {
+                                        Text("Edit").foregroundStyle(.white).padding(7).background(.green).clipShape(RoundedRectangle(cornerRadius: 10))
 
                                     }
-                                
-                                } label: {
-                                    Text("Delete").foregroundStyle(.white).padding(7).background(.red).clipShape(RoundedRectangle(cornerRadius: 10))
-                                }
-                                
-                                Button {
-                                    
-                                } label: {
-                                    Text("Edit").foregroundStyle(.white).padding(7).background(.green).clipShape(RoundedRectangle(cornerRadius: 10))
-                                }
 
-                            }
-                            
-                        }.padding(.horizontal)
+                                  
+
+                                }
+                                
+                            }.padding(.horizontal)
+                        }
+                      
                     }
-                  
                 }
+                
+                
+                
+                Spacer()
             }
-            
-            
-            
-            Spacer()
         }
         
         .overlay(content: {

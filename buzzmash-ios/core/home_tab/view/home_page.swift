@@ -12,7 +12,7 @@ struct FeedView:View {
     @State var selectedId:String = "all"
     @Namespace var namesapce
     
-    
+    var appInitVM:AppInitVM = AppInitVM.appInitVM
     
      // This ensures the date format is interpreted correctly
     
@@ -34,7 +34,7 @@ struct FeedView:View {
                 Text("Buzzmash")
                 Spacer()
             }
-            if(blogVM.getBlogCategoryIsLoading) {
+            if(appInitVM.getBlogCategoryIsLoading) {
                 ProgressView()
             } else {
                 
@@ -58,7 +58,7 @@ struct FeedView:View {
                             }
                            
                         })
-                        ForEach(blogVM.requiredBlogCategory, id: \.id){cat in
+                        ForEach(appInitVM.requiredBlogCategory, id: \.id){cat in
                             
                             
                             

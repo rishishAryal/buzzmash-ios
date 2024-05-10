@@ -7,7 +7,8 @@
 
 import Foundation
 import Combine
-
+import SwiftUI
+import UIKit
 class BlogViewModel:ObservableObject {
     @Published var getBlogCategoryIsLoading:Bool = false
     @Published var getBlogCategory:GetBlogCategory?
@@ -31,7 +32,7 @@ class BlogViewModel:ObservableObject {
         self.blogRepo = blogRepo
         self.getFeed() {_ in
             
-            self.getCategory()
+//            self.getCategory()
 
         }
     }
@@ -107,6 +108,59 @@ class BlogViewModel:ObservableObject {
         
     }
     
+    func uploadImage(image: UIImage,id:String, completion: @escaping (Bool, AddBlogThumbnail?, Error?) -> Void) {
+        let targetURL = URL(string: "https://buzzmash.onrender.com/api/v1/blog/addBlogThumbnail/\(id)")!
+
+        // Create the request
+        var request = URLRequest(url: targetURL)
+        request.httpMethod = "POST"
+        
+        // Set the Authorization header if the token exists
+        if let token = UserDefaults.standard.string(forKey: ApplicationText.token) {
+            request.setValue("Bearer \(token)", forHTTPHeaderField: "Authorization")
+        }
+
+        // Define the multipart/form-data boundary
+        let boundary = "Boundary-\(UUID().uuidString)"
+        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+
+        // Convert UIImage to Data
+        guard let imageData = image.jpegData(compressionQuality: 0.5) else {
+             completion(false, nil, URLError(.cannotCreateFile))
+             return
+         }
+
+        // Create HTTP body
+        var body = Data()
+        
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"thumbnail\"; filename=\"image.jpg\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: image/jpeg\r\n\r\n".data(using: .utf8)!)
+        body.append(imageData)
+        body.append("\r\n".data(using: .utf8)!)
+        
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        request.httpBody = body
+
+        // Perform the request
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            guard let data = data, error == nil else {
+                completion(false, nil, error)
+                return
+            }
+            do {
+                // Decode the JSON data into the AddBlogThumbnail struct
+                let decoder = JSONDecoder()
+                let responseData = try decoder.decode(AddBlogThumbnail.self, from: data)
+                // Check for server-reported success
+                let isSuccess = responseData.success
+                completion(isSuccess, responseData, nil)
+            } catch {
+                completion(false, nil, error)
+            }
+        }.resume()
+    }
     
 
     
