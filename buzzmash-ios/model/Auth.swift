@@ -10,18 +10,18 @@ import Foundation
 
 struct AuthModel: Codable {
     let message, jwtToken: String
-    let user: User
+    var user: User
     let success: Bool
 }
 
 // MARK: - User
 struct User: Codable {
-    let id, name, username, email: String
-    let password: String
-    let instagram: String
-    let twitter, facebook, dob: String
-    let profilePicture: String
-    let v: Int
+    var id, name, username, email: String
+    var password: String
+    var instagram: String
+    var twitter, facebook, dob: String
+    var profilePicture: String
+    var v: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -31,6 +31,16 @@ struct User: Codable {
         case v = "__v"
     }
 }
+
+
+struct UpdateUserModel: Codable {
+    let message: String
+    let user: Profile
+    let success: Bool
+}
+
+
+
 
 
 struct ChangePasswordModel: Codable {

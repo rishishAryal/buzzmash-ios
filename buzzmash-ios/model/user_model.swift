@@ -10,17 +10,17 @@ import Foundation
 
 struct UserProfile: Codable {
     let message: String
-    let profile: Profile
+    var profile: Profile
 }
 
 // MARK: - Profile
 struct Profile: Codable {
-    let id, name, username, email: String
-    let password: String
-    let instagram: String
-    let twitter, facebook, dob: String
-    let profilePicture: String
-    let v: Int
+    var id, name, username, email: String
+    var password: String
+    var instagram: String
+    var twitter, facebook, dob: String
+    var profilePicture: String
+    var v: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -29,4 +29,11 @@ struct Profile: Codable {
         case profilePicture
         case v = "__v"
     }
+}
+
+
+struct ProfilePictureUpdateModel: Codable {
+    let message: String
+    let success: Bool
+    var profilePicture: String
 }

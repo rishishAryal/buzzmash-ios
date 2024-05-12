@@ -21,6 +21,8 @@ class AuthViewModel:ObservableObject {
     @Published var changePasswordResponseMessage:String =  ""
     @Published var changePassword:ChangePasswordModel?
     
+   
+    
     final var authRepo:AuthApiServiceRepo
     
     init( authRepo: AuthApiServiceRepo) {
@@ -122,6 +124,7 @@ class AuthViewModel:ObservableObject {
             }
         }
     }
+
 
     
 }

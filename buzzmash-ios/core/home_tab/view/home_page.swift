@@ -155,6 +155,10 @@ struct FeedView:View {
                             
                             
                         }
+                    }.refreshable {
+                        blogVM.getFeed { Bool in
+                            
+                        }
                     }
                 }
             

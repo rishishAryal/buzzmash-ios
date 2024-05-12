@@ -11,7 +11,9 @@ struct profile_view: View {
     @ObservedObject var authVm: AuthViewModel
     @StateObject var userVm:UserViewModel = UserViewModel(userRepo: UserApiServiceRepo(userServiceRepo: UserApiService()))
     @ObservedObject var blogVM:BlogViewModel
-
+    @State var showingImagePicker:Bool = false
+    @State private var inputImage: UIImage?
+    @State private var imageToShow: Image?
     
     var body: some View {
         NavigationStack{
@@ -23,7 +25,7 @@ struct profile_view: View {
                     Spacer()
                     
                     NavigationLink {
-                        Settings(authVm: authVm).navigationTitle("Settings")
+                        Settings(authVm: authVm, userVM: userVm).navigationTitle("Settings")
                     } label: {
                         Image(systemName: "gear").font(.title)
 
@@ -60,19 +62,73 @@ struct profile_view: View {
                 } else {
                     HStack{
                         VStack (alignment: .leading, spacing: 20){
-                            AsyncImage(url: URL(string: userVm.profile?.profile.profilePicture ?? "")) { image in
-                                      image
-                                          .resizable()
-                                          .aspectRatio(contentMode: .fill)
-                                          .frame(width: 70, height: 70)
-                                          .clipShape(Circle())
-                                          
-                                  } placeholder: {
-                                      Color.gray
-                                          .frame(width: 70, height: 70)
-                                          .clipShape(Circle())
-                                  }
-                            
+                            HStack(spacing: 20){
+                                AsyncImage(url: URL(string: userVm.profile?.profile.profilePicture ?? "https://st4.depositphotos.com/9998432/22597/v/450/depositphotos_225976914-stock-illustration-person-gray-photo-placeholder-man.jpg")) { image in
+                                          image
+                                              .resizable()
+                                              .aspectRatio(contentMode: .fill)
+                                              .frame(width: 70, height: 70)
+                                              .clipShape(Circle()).overlay(alignment: .bottomTrailing) {
+                                                  Image(systemName: "camera.fill").font(.caption2).foregroundStyle(.white)
+                                                      .padding(6).background(.gray).clipShape(Circle())
+                                                      
+                                              }
+                                              
+                                      } placeholder: {
+                                          Color.gray
+                                              .frame(width: 70, height: 70)
+                                              .clipShape(Circle())
+                                      }
+                                
+                                      .onTapGesture(perform: {
+                                          showingImagePicker.toggle()
+                                      })
+                                
+                                      .sheet(isPresented: $showingImagePicker) {
+                                                ImagePicker(image: $inputImage, imageToShow: $imageToShow)
+                                            }
+                                
+                                if let img = inputImage {
+                                    
+                                    
+                                    if (userVm.imageUploadingLoading) {
+                                        ProgressView()
+                                    } else {
+                                        Text("Update").onTapGesture {
+                                            userVm.updateProfilePicture(image: img) { success, data in
+                                                if success {
+                                                    withAnimation {
+                                                        userVm.profile?.profile.profilePicture = data!.profilePicture
+
+                                                    }
+                                                inputImage = nil
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    
+                                    
+                                    
+//                                    Button(action: {
+//                                        userVm.updateProfilePicture(image: img) { success, data in
+//                                            if success {
+//                                                userVm.profile?.profile.profilePicture = data!.profilePicture
+//                                                
+//                                            }
+//                                    }, label: {
+//                                        if userVm.imageUploadingLoading {
+//                                            ProgressView()
+//                                        } else {
+//                                            Text("Update")
+//                                        }
+//                                    })
+//                                    
+//                                    }
+                                }
+                                Spacer()
+                            }
+
                             VStack(alignment: .leading){
                                    Text(userVm.profile?.profile.username ?? "")
                                     Text(userVm.profile?.profile.name ?? "").font(.footnote).foregroundStyle(.gray)
@@ -211,6 +267,10 @@ struct DashboardView:View {
                             }.padding(.horizontal)
                         }
                       
+                    }.refreshable {
+                        userVm.getUserDasboardBlogs { Bool in
+                            
+                        }
                     }
                 }
                 

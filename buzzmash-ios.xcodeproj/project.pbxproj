@@ -39,6 +39,7 @@
 		291E907E2BEE33BF00331195 /* app_init.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907D2BEE33BF00331195 /* app_init.swift */; };
 		291E90802BEE342C00331195 /* app_init_repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907F2BEE342C00331195 /* app_init_repo.swift */; };
 		291E90832BEE34D400331195 /* AppInitVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90822BEE34D400331195 /* AppInitVM.swift */; };
+		291E90892BF13D7800331195 /* ChangeProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90882BF13D7800331195 /* ChangeProfilePicture.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		291E907D2BEE33BF00331195 /* app_init.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init.swift; sourceTree = "<group>"; };
 		291E907F2BEE342C00331195 /* app_init_repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init_repo.swift; sourceTree = "<group>"; };
 		291E90822BEE34D400331195 /* AppInitVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInitVM.swift; sourceTree = "<group>"; };
+		291E90882BF13D7800331195 /* ChangeProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeProfilePicture.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -210,6 +212,7 @@
 				2913F5822BED35BC008259C9 /* Settings.swift */,
 				2913F5842BED3779008259C9 /* AddBlog.swift */,
 				291E907B2BEE327900331195 /* EditBlogView.swift */,
+				291E90882BF13D7800331195 /* ChangeProfilePicture.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -320,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				2913F56E2BECF9D3008259C9 /* auth_view_mode.swift in Sources */,
+				291E90892BF13D7800331195 /* ChangeProfilePicture.swift in Sources */,
 				2913F5852BED3779008259C9 /* AddBlog.swift in Sources */,
 				2913F5532BECDCC2008259C9 /* Home_Tab.swift in Sources */,
 				2913F5772BED022F008259C9 /* splahsScreen.swift in Sources */,

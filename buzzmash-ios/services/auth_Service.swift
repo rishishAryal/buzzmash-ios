@@ -11,6 +11,7 @@ import Combine
 protocol AuthApiServiceProtocol {
     func login(email: String, password:String, resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
     func changePassword(oldPassword: String, newPassword:String, resultHandler: @escaping (_ responseData: ResposeData<ChangePasswordModel?>) -> ())
+    
 
 
 }
@@ -21,9 +22,12 @@ final class AuthApiService : AuthApiServiceProtocol {
     
   
     
+  
+    
     private var cancellable: AnyCancellable?
     @Published var auth:AuthModel?
     @Published var changePassword:ChangePasswordModel?
+    
     
     
     
@@ -89,5 +93,7 @@ final class AuthApiService : AuthApiServiceProtocol {
         
 
     }
+    
+
     
 }

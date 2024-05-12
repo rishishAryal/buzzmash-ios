@@ -12,7 +12,7 @@ protocol UserApiServiceProtocol {
     func profile(resultHandler: @escaping (_ responseData: ResposeData<UserProfile?>) -> ())
     func getUserBlog(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
     func deleteBlog(id: String,resultHandler: @escaping (_ responseData: ResposeData<DeleteBlog?>) -> ())
-
+    func updateUserDetails(name: String, username:String,instagram: String, facebook: String,twitter: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateUserModel?>) -> ())
 }
 
 
@@ -23,6 +23,8 @@ final class UserApiService:UserApiServiceProtocol {
     @Published var getUserBlogs:BlogFeed?
     @Published var profile:UserProfile?
     @Published var delete:DeleteBlog?
+    @Published var updateUserModel:UpdateUserModel?
+
     private var cancellable: AnyCancellable?
 
     func profile( resultHandler: @escaping (ResposeData<UserProfile?>) -> ()) {
@@ -106,6 +108,37 @@ final class UserApiService:UserApiServiceProtocol {
                     self?.getUserBlogs = receivedData
                    print("data recieved is \(receivedData)")
                     resultHandler(ResposeData<BlogFeed?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.getUserBlogs ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
+    }
+    
+    
+    func updateUserDetails(name: String, username: String, instagram: String, facebook: String, twitter: String, resultHandler: @escaping (ResposeData<UpdateUserModel?>) -> ()) {
+        guard let url = URL(string: ApiUrl.updateProfile) else {
+            print("Invalid URL")
+            return
+        }
+        
+        let credentials = ["name": name , "username": username, "instagram": instagram,"facebook": facebook,"twitter": twitter]  as [String: Any]
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.put, url: url, credentials: credentials  )
+                .decode(type: UpdateUserModel.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<UpdateUserModel?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.updateUserModel = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<UpdateUserModel?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.updateUserModel ))
                 })
         } catch {
             print("The file could not be loaded")

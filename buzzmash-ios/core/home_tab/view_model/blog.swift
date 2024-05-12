@@ -64,6 +64,8 @@ class BlogViewModel:ObservableObject {
     
     func getFeed(completion :@escaping(_ isSuccess: Bool)-> ()){
         self.getBlogFeedIsLoading = true
+        self.requiredBlogFeed = []
+        self.getBlogFeed = nil
         self.blogRepo.getBlogFeed { response in
             self.getBlogFeed = response.responseData
             if(response.errorMessage != "" || !response.isSucess) {

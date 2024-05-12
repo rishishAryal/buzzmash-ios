@@ -10,6 +10,18 @@ import SwiftUI
 struct HomeTab: View {
     @StateObject var blogVM:BlogViewModel = BlogViewModel(blogRepo: BlogApiServiceRepo(blogApiService: BlogApiService()))
     @EnvironmentObject var authVm: AuthViewModel
+    
+    func getProfilePictureLink()->String {
+        
+        
+        if let profilePicture = UserDefaults.standard.string(forKey: "profilePicture") {
+            return profilePicture
+        } else {
+            return ""
+        }
+        
+        
+    }
 
     
     var body: some View {
@@ -39,8 +51,12 @@ struct HomeTab: View {
                     profile_view(authVm: authVm, blogVM: blogVM)
                       
                 .tabItem {
+                    
+               
                         Image(systemName: "person")
                         Text("Profile")
+                    
+                        
                     }
                 }
             } else {

@@ -13,13 +13,15 @@ protocol AuthApiServiceRepoProtocol {
     func login(email: String, password:String, resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
     func changePassword(oldPassword: String, newPassword:String, resultHandler: @escaping (_ responseData: ResposeData<ChangePasswordModel?>) -> ())
 
-
+    
 
     
 }
 
 
 final class AuthApiServiceRepo:AuthApiServiceRepoProtocol {
+    
+    
   
     
     
@@ -37,6 +39,7 @@ final class AuthApiServiceRepo:AuthApiServiceRepoProtocol {
     func changePassword(oldPassword: String, newPassword: String, resultHandler: @escaping (ResposeData<ChangePasswordModel?>) -> ()) {
         self.authService.changePassword(oldPassword: oldPassword, newPassword: newPassword, resultHandler: resultHandler)
     }
+    
     
     
 }
