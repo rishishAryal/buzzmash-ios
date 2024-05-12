@@ -9,19 +9,19 @@ import Foundation
 
 
 struct BlogFeed: Codable {
-    let message: String
-    let blogs: [Blog]
-    let success: Bool
+    var message: String
+    var blogs: [Blog]
+    var success: Bool
 }
 
 // MARK: - Blog
 struct Blog: Codable {
-    let id, title, description, slug: String
-    let thumbnail: String
-    let category, author, userID: String
-    let likeCount, commentCount: Int
-    let createdAt, updatedAt: String
-    let v: Int
+    var id, title, description, slug: String
+    var thumbnail: String
+    var category, author, userID: String
+    var likeCount, commentCount: Int
+    var createdAt, updatedAt: String
+    var v: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -34,7 +34,7 @@ struct Blog: Codable {
 
 struct NewBlog: Codable {
     let message: String
-    let blog: Blog
+    var blog: Blog
     let success: Bool
 }
 
@@ -49,5 +49,5 @@ struct DeleteBlog: Codable {
 struct AddBlogThumbnail: Codable {
     let message: String
     let success: Bool
-    let thumbnail: String
+    var thumbnail: String
 }

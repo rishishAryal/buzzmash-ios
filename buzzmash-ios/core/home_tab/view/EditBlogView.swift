@@ -13,7 +13,7 @@ struct EditBlogView: View {
     @State var title:String
     @State var desc:String
     @State var category:String
-    @Binding var thumbnail:String 
+    @State var thumbnail:String
     @State var author:String
     @State var blogID:String
     var appInitVM:AppInitVM = AppInitVM.appInitVM
@@ -25,19 +25,15 @@ struct EditBlogView: View {
     @State private var showingImagePicker = false
     @State private var inputImage: UIImage?
     @State private var imageToShow: Image?
+    var onThumbnailUpdate: (String, String)->()
 
 
     var body: some View {
         ScrollView{
             VStack {
                     
-                
-                if let image = imageToShow {
-                    image .resizable()
-                        .aspectRatio(contentMode: .fill)
-                        .frame(width: UIScreen.main.bounds.width, height: 300)
-                        .clipped()
-                } else {
+              
+             
                     if(!thumbnail.isEmpty) {
                         AsyncImage(url: URL(string: thumbnail)) { image in
                             image.resizable()
@@ -51,7 +47,7 @@ struct EditBlogView: View {
                 }
                 
               
-                }
+                
                 VStack {
                     
                     Button(action: {
@@ -68,18 +64,39 @@ struct EditBlogView: View {
                 
                 
                 if let image = inputImage {
-                    Text("Update Thumbnail").padding(7).foregroundStyle(.white).background(.blue).clipShape(RoundedRectangle(cornerRadius: 10)).onTapGesture(perform: {
+                    
+                    Button(action:
+                            {
                         blogVM.uploadImage(image: image, id: blogID) { isSuccess, data, error in
                             
                             if isSuccess {
-                                inputImage = nil
-                                imageToShow = nil
-                                thumbnail = data?.thumbnail ?? ""
-                                showingImagePicker = false
+                                
+                                
+                              
+                           
+                                    inputImage = nil
+                                    imageToShow = nil
+                                    thumbnail = data?.thumbnail ?? ""
+                                    showingImagePicker = false
+                                onThumbnailUpdate(data?.thumbnail ?? "" , blogID)
+                                  
+                                
+                                
+                               
                             }
                             
                         }
+                    }, label: {
+                        RoundedRectangle(cornerRadius: 10).frame(height: 50).overlay {
+                            if(blogVM.imageLoading) {
+                                ProgressView()
+                            } else {
+                                Text("Update Thumbnail").foregroundStyle(.white)
+                            }
+                        }
                     })
+                    
+                  
                 }
                 VStack(alignment: .leading,spacing: 5){
                     Text("Title").font(.caption)

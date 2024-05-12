@@ -21,7 +21,7 @@ class BlogViewModel:ObservableObject {
     @Published var isLoading:Bool = false
     @Published var response:String = ""
     @Published var newBlog:NewBlog?
-
+    @Published var imageLoading:Bool = false
     
     
 
@@ -109,6 +109,7 @@ class BlogViewModel:ObservableObject {
     }
     
     func uploadImage(image: UIImage,id:String, completion: @escaping (Bool, AddBlogThumbnail?, Error?) -> Void) {
+        self.imageLoading = true
         let targetURL = URL(string: "https://buzzmash.onrender.com/api/v1/blog/addBlogThumbnail/\(id)")!
 
         // Create the request
@@ -145,21 +146,28 @@ class BlogViewModel:ObservableObject {
 
         // Perform the request
         URLSession.shared.dataTask(with: request) { data, response, error in
-            guard let data = data, error == nil else {
-                completion(false, nil, error)
-                return
-            }
-            do {
-                // Decode the JSON data into the AddBlogThumbnail struct
-                let decoder = JSONDecoder()
-                let responseData = try decoder.decode(AddBlogThumbnail.self, from: data)
-                // Check for server-reported success
-                let isSuccess = responseData.success
-                completion(isSuccess, responseData, nil)
-            } catch {
-                completion(false, nil, error)
+            DispatchQueue.main.async {
+                guard let data = data, error == nil else {
+                    completion(false, nil, error)
+                    return
+                }
+                do {
+                    // Decode the JSON data into the AddBlogThumbnail struct
+                    let decoder = JSONDecoder()
+                    let responseData = try decoder.decode(AddBlogThumbnail.self, from: data)
+                    // Check for server-reported success
+                    let isSuccess = responseData.success
+                    self.imageLoading = false
+
+                    completion(isSuccess, responseData, nil)
+                } catch {
+                    self.imageLoading = false
+
+                    completion(false, nil, error)
+                }
             }
         }.resume()
+
     }
     
 

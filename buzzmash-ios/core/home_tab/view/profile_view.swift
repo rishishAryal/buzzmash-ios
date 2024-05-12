@@ -169,7 +169,16 @@ struct DashboardView:View {
                                     NavigationLink {
 //                                        EditBlogView(blogVM: blogVM)
                                         
-                                        EditBlogView(title: blog.title, desc: blog.description, category: blog.category, thumbnail: $thumbnail, author: blog.author, blogID: blog.id, blogVM: blogVM)
+                                        EditBlogView(title: blog.title, desc: blog.description, category: blog.category, thumbnail: blog.thumbnail, author: blog.author, blogID: blog.id, blogVM: blogVM, onThumbnailUpdate: {imgUrl, blogId in
+                                          
+                                            let index = userVm.requiredBlogDashboard.firstIndex(where: {$0.id == blogId})
+                                            
+                                            if let i = index {
+                                                userVm.requiredBlogDashboard[i].thumbnail = imgUrl
+                                            }
+                                           
+                                            
+                                        })
                                         .navigationTitle("Edit Blog")
                                     } label: {
                                         Text("Edit").foregroundStyle(.white).padding(7).background(.green).clipShape(RoundedRectangle(cornerRadius: 10))
