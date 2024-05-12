@@ -31,3 +31,9 @@ struct User: Codable {
         case v = "__v"
     }
 }
+
+
+struct ChangePasswordModel: Codable {
+    let message: String
+    let success: Bool
+}

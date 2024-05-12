@@ -16,6 +16,11 @@ class AuthViewModel:ObservableObject {
     @Published var isUserLogin:Bool = false
     @Published var showSplashScreen:Bool = false
     
+    @Published var incorrectPassword:Bool = false
+    @Published var isChangePasswordLoading:Bool = false
+    @Published var changePasswordResponseMessage:String =  ""
+    @Published var changePassword:ChangePasswordModel?
+    
     final var authRepo:AuthApiServiceRepo
     
     init( authRepo: AuthApiServiceRepo) {
@@ -80,6 +85,7 @@ class AuthViewModel:ObservableObject {
                     self.loginResponseMessage = ""
 
                     
+                    
                 }
             } else {
                 self.isLoginLoading = false
@@ -92,6 +98,30 @@ class AuthViewModel:ObservableObject {
         
     }
 
+    
+    
+    func changePassword(oldPassword:String , newPassword:String, completion: @escaping(_ isSuccess: Bool)->()) {
+        
+        self.isChangePasswordLoading  = true
+        self.authRepo.changePassword(oldPassword: oldPassword, newPassword: newPassword) { response in
+            self.changePassword = response.responseData
+            
+            if(response.errorMessage != "" || !response.isSucess){
+                self.changePasswordResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.isChangePasswordLoading = false
+                    self.changePasswordResponseMessage = ""
+                   
+                    completion(false)
+
+                    
+                }
+            } else {
+                self.isChangePasswordLoading = false
+                completion(true)
+            }
+        }
+    }
 
     
 }

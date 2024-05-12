@@ -78,8 +78,8 @@
             filePath = "buzzmash-ios/auth/auth_view_mode.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "76"
-            endingLineNumber = "76"
+            startingLineNumber = "81"
+            endingLineNumber = "81"
             landmarkName = "loginUser(email:pasword:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -110,8 +110,8 @@
             filePath = "buzzmash-ios/auth/auth_view_mode.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "85"
-            endingLineNumber = "85"
+            startingLineNumber = "91"
+            endingLineNumber = "91"
             landmarkName = "loginUser(email:pasword:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -126,8 +126,8 @@
             filePath = "buzzmash-ios/auth/auth_view_mode.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "84"
-            endingLineNumber = "84"
+            startingLineNumber = "90"
+            endingLineNumber = "90"
             landmarkName = "loginUser(email:pasword:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -142,8 +142,8 @@
             filePath = "buzzmash-ios/auth/auth_view_mode.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "92"
+            endingLineNumber = "92"
             landmarkName = "loginUser(email:pasword:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -241,6 +241,54 @@
             startingLineNumber = "194"
             endingLineNumber = "194"
             landmarkName = "update(author:title:description:category:thumbnail:id:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "5FC578E4-92D5-4004-A545-38F1E3267860"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/auth/auth_view_mode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "114"
+            endingLineNumber = "114"
+            landmarkName = "changePassword(oldPassword:newPassword:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FCDFD259-B572-4C75-950A-7605A5996677"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/auth/auth_view_mode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "113"
+            endingLineNumber = "113"
+            landmarkName = "changePassword(oldPassword:newPassword:completion:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "53F59421-4BB6-4E52-BA58-9D184007AB38"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/auth/auth_view_mode.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "107"
+            endingLineNumber = "107"
+            landmarkName = "changePassword(oldPassword:newPassword:completion:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
