@@ -26,6 +26,8 @@ struct EditBlogView: View {
     @State private var inputImage: UIImage?
     @State private var imageToShow: Image?
     var onThumbnailUpdate: (String, String)->()
+    var onBlogUpdate: (UpdatedBlog,String)->()
+
 
 
     var body: some View {
@@ -156,10 +158,20 @@ struct EditBlogView: View {
                 }.padding()
                 
                 Button {
-                    
+                    blogVM.update(author: author, title: title, description: desc, category: category, thumbnail: thumbnail, id: blogID){success in
+                        
+                        if success {
+                            onBlogUpdate(blogVM.updatedBlog!, blogID)
+                        }
+                    }
                 } label: {
                     RoundedRectangle(cornerRadius: 10).frame(height: 50).overlay {
-                        Text("Update").foregroundStyle(.white)
+                        if blogVM.updateBlogIsLoading {
+                            ProgressView()
+                        } else {
+                            Text("Update").foregroundStyle(.white)
+
+                        }
 
                         
                        

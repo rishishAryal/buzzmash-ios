@@ -15,13 +15,15 @@ protocol BlogApiServiceRepoProtocol {
     func getBlogFeed(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
     func createBlog (title: String , description: String, category: String,resultHandler: @escaping (_ responseData: ResposeData<NewBlog?>) -> ())
 
-
+    func updateBlog (author: String,title: String , description: String, category: String ,thumbnail:String,id:String,resultHandler: @escaping (_ responseData: ResposeData<UpdatedBlog?>) -> ())
 
     
 }
 
 
 final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
+ 
+    
    
     
 
@@ -45,6 +47,10 @@ final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
     }
     func createBlog(title: String, description: String, category: String, resultHandler: @escaping (ResposeData<NewBlog?>) -> ()) {
         self.blogApiService.createBlog(title: title, description: description, category: category, resultHandler: resultHandler)
+    }
+    
+    func updateBlog(author: String, title: String, description: String, category: String, thumbnail: String, id: String, resultHandler: @escaping (ResposeData<UpdatedBlog?>) -> ()) {
+        self.blogApiService.updateBlog(author: author, title: title, description: description, category: category, thumbnail: thumbnail, id: id, resultHandler: resultHandler)
     }
    
     

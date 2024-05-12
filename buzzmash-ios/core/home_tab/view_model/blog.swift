@@ -22,6 +22,9 @@ class BlogViewModel:ObservableObject {
     @Published var response:String = ""
     @Published var newBlog:NewBlog?
     @Published var imageLoading:Bool = false
+    @Published var updateBlogIsLoading:Bool = false
+    @Published var updateBlogResponse:String = ""
+    @Published var updatedBlog:UpdatedBlog?
     
     
 
@@ -170,6 +173,27 @@ class BlogViewModel:ObservableObject {
 
     }
     
+    
+    func update(author: String, title: String, description: String, category: String, thumbnail: String, id: String, completion
+                :@escaping(_ success:Bool)->()){
+        self.updateBlogIsLoading = true
+        
+        self.blogRepo.updateBlog(author: author, title: title, description: description, category: category, thumbnail: thumbnail, id: id) { response in
+            self.updatedBlog = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.updateBlogResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    self.updateBlogResponse = ""
+                    self.updateBlogIsLoading = false
+                    completion(false)
+
+                }
+            } else {
+                self.updateBlogIsLoading = false
+                completion(true)
+            }
+        }
+    }
 
     
 }

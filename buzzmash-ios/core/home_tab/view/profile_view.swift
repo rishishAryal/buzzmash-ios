@@ -178,6 +178,25 @@ struct DashboardView:View {
                                             }
                                            
                                             
+                                        }, onBlogUpdate:
+                                                        {
+                                            data, blogId in
+                                            
+                                            let blog = userVm.requiredBlogDashboard.firstIndex(where: {$0.id == blogId})
+                                            
+                                            if let index = blog {
+                                                userVm.requiredBlogDashboard[index].thumbnail = data.updatedBlog.thumbnail
+                                                userVm.requiredBlogDashboard[index].title = data.updatedBlog.title
+                                                userVm.requiredBlogDashboard[index].author = data.updatedBlog.author
+                                                userVm.requiredBlogDashboard[index].category = data.updatedBlog.category
+                                                userVm.requiredBlogDashboard[index].description = data.updatedBlog.description
+
+
+
+
+                                            }
+                                         
+                                            
                                         })
                                         .navigationTitle("Edit Blog")
                                     } label: {

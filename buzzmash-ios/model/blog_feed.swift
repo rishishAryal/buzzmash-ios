@@ -38,6 +38,16 @@ struct NewBlog: Codable {
     let success: Bool
 }
 
+struct UpdatedBlog: Codable {
+    let message: String
+    let success: Bool
+    let updatedBlog: Blog
+}
+
+// MARK: - UpdatedBlog
+
+
+
 // MARK: - Blog
 
 struct DeleteBlog: Codable {

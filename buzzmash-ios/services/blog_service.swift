@@ -13,6 +13,8 @@ protocol BlogApiServiceProtocol {
     func getBlogCategory(resultHandler: @escaping (_ responseData: ResposeData<GetBlogCategory?>) -> ())
     func getBlogFeed(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
     func createBlog (title: String , description: String, category: String,resultHandler: @escaping (_ responseData: ResposeData<NewBlog?>) -> ())
+    func updateBlog (author: String,title: String , description: String, category: String ,thumbnail:String,id:String,resultHandler: @escaping (_ responseData: ResposeData<UpdatedBlog?>) -> ())
+
 //    func addBlogThumbnail()
 
 
@@ -20,6 +22,8 @@ protocol BlogApiServiceProtocol {
 
 
 final class BlogApiService:BlogApiServiceProtocol {
+ 
+    
 
     
    
@@ -33,6 +37,7 @@ final class BlogApiService:BlogApiServiceProtocol {
     @Published var blogFeed:BlogFeed?
     
     @Published var newBlog:NewBlog?
+    @Published var updateBlog:UpdatedBlog?
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
         guard let url = URL(string: ApiUrl.getBlogCategory) else {
@@ -125,6 +130,39 @@ final class BlogApiService:BlogApiServiceProtocol {
 
         }
         
+        
+    }
+    
+    func updateBlog(author: String, title: String, description: String, category: String, thumbnail: String,id: String, resultHandler: @escaping (ResposeData<UpdatedBlog?>) -> ()) {
+        
+        guard let url = URL(string: "https://buzzmash.onrender.com/api/v1/blog/update/\(id)") else {
+            print("Invalid URL")
+            return
+            
+           
+        }
+        let credentials = ["title": title, "description": description, "category": category, "author": author, "thumbnail": thumbnail ] as [String: Any]
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.put, url: url , credentials: credentials )
+                .decode(type: UpdatedBlog.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<UpdatedBlog?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.updateBlog = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<UpdatedBlog?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.updateBlog ))
+                })
+        } catch {
+            print("The file could not be loaded")
+
+        }
         
     }
     
