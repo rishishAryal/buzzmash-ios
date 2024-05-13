@@ -14,6 +14,9 @@ protocol BlogApiServiceProtocol {
     func getBlogFeed(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
     func createBlog (title: String , description: String, category: String,resultHandler: @escaping (_ responseData: ResposeData<NewBlog?>) -> ())
     func updateBlog (author: String,title: String , description: String, category: String ,thumbnail:String,id:String,resultHandler: @escaping (_ responseData: ResposeData<UpdatedBlog?>) -> ())
+    func getBlogFeedByCategory(category:String,resultHandler: @escaping (_ responseData: ResposeData<GetBlogByCategory?>) -> ())
+    func likeUnlikeBlog(blogId: String , resultHandler: @escaping (_ responseData: ResposeData<BlogLikeModel?>) -> () )
+
 
 //    func addBlogThumbnail()
 
@@ -22,6 +25,10 @@ protocol BlogApiServiceProtocol {
 
 
 final class BlogApiService:BlogApiServiceProtocol {
+  
+    
+   
+    
  
     
 
@@ -38,6 +45,8 @@ final class BlogApiService:BlogApiServiceProtocol {
     
     @Published var newBlog:NewBlog?
     @Published var updateBlog:UpdatedBlog?
+    @Published var blogFeedByCategory:GetBlogByCategory?
+    @Published var like:BlogLikeModel?
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
         guard let url = URL(string: ApiUrl.getBlogCategory) else {
@@ -158,6 +167,70 @@ final class BlogApiService:BlogApiServiceProtocol {
                     self?.updateBlog = receivedData
                    print("data recieved is \(receivedData)")
                     resultHandler(ResposeData<UpdatedBlog?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.updateBlog ))
+                })
+        } catch {
+            print("The file could not be loaded")
+
+        }
+        
+    }
+    
+    
+    func getBlogFeedByCategory(category:String,resultHandler: @escaping (ResposeData<GetBlogByCategory?>) -> ()) {
+        guard let url = URL(string: ApiUrl.getBlogByCategory) else {
+            print("Invalid URL")
+            return
+        }
+        let credentials = ["category": category] as [String:Any]
+        
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.post, url: url, credentials: credentials)
+                .decode(type: GetBlogByCategory.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        resultHandler (ResposeData<GetBlogByCategory?>(isLoading: false, errorMessage:  String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue:    {[weak self] (receiveData) in
+                    self?.blogFeedByCategory  = receiveData
+                    
+                    resultHandler (ResposeData(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.blogFeedByCategory))
+                    
+                })
+        } catch {
+            print("The file could not be loaded")
+
+        }
+        
+    }
+    
+    func likeUnlikeBlog(blogId: String, resultHandler: @escaping (ResposeData<BlogLikeModel?>) -> ()) {
+        guard let url = URL(string: ApiUrl.likeBlog) else {
+            print("Invalid URL")
+            return
+        }
+        let credentials = ["blogId": blogId] as [String:Any]
+
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.post, url: url, credentials: credentials)
+                .decode(type: BlogLikeModel.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        resultHandler (ResposeData<BlogLikeModel?>(isLoading: false, errorMessage:  String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue:    {[weak self] (receiveData) in
+                    self?.like  = receiveData
+                    
+                    resultHandler (ResposeData(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.like))
+                    
                 })
         } catch {
             print("The file could not be loaded")

@@ -55,6 +55,9 @@ struct FeedView:View {
                         }.onTapGesture(perform: {
                             withAnimation {
                                 selectedId = "all"
+                                blogVM.getFeed { Bool in
+                                    
+                                }
                             }
                            
                         })
@@ -76,6 +79,9 @@ struct FeedView:View {
                             .onTapGesture(perform: {
                                 withAnimation {
                                     selectedId = cat.id
+                                    blogVM.getFeedByCategory(category: cat.name) { Bool in
+                                        
+                                    }
 
                                 }
                             })
@@ -95,6 +101,11 @@ struct FeedView:View {
                 } else {
                    
                     ScrollView {
+                        
+                        if blogVM.requiredBlogFeed.count == 0 {
+                            Text("N0 Blog of this category").padding(.top,50)
+                        }
+                        
                         ForEach(blogVM.requiredBlogFeed.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
                             
                             VStack {
@@ -139,6 +150,8 @@ struct FeedView:View {
                                             Image(systemName: "heart")
                                             Text("\(blog.likeCount)")
                                            
+                                        }.onTapGesture {
+                                            blogVM.likeunlikeBlog(blogId: blog.id)
                                         }
                                         HStack {
                                             Image(systemName: "message.fill")

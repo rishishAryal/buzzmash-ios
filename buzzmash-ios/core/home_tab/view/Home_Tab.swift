@@ -51,13 +51,18 @@ struct HomeTab: View {
                     profile_view(authVm: authVm, blogVM: blogVM)
                       
                 .tabItem {
-                    
-               
-                        Image(systemName: "person")
-                        Text("Profile")
+                
+                                
+                                        Image(systemName: "person")
+                                            
+                                        Text("Profile")
+                                    
+                                
+                      
                     
                         
                     }
+                    
                 }
             } else {
                 login().environmentObject(authVm)

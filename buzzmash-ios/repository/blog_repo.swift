@@ -16,12 +16,19 @@ protocol BlogApiServiceRepoProtocol {
     func createBlog (title: String , description: String, category: String,resultHandler: @escaping (_ responseData: ResposeData<NewBlog?>) -> ())
 
     func updateBlog (author: String,title: String , description: String, category: String ,thumbnail:String,id:String,resultHandler: @escaping (_ responseData: ResposeData<UpdatedBlog?>) -> ())
+    func getBlogFeedByCategory(category:String,resultHandler: @escaping (_ responseData: ResposeData<GetBlogByCategory?>) -> ())
+    func likeUnlikeBlog(blogId: String , resultHandler: @escaping (_ responseData: ResposeData<BlogLikeModel?>) -> () )
+
 
     
 }
 
 
 final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
+  
+    
+   
+    
  
     
    
@@ -52,6 +59,10 @@ final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
     func updateBlog(author: String, title: String, description: String, category: String, thumbnail: String, id: String, resultHandler: @escaping (ResposeData<UpdatedBlog?>) -> ()) {
         self.blogApiService.updateBlog(author: author, title: title, description: description, category: category, thumbnail: thumbnail, id: id, resultHandler: resultHandler)
     }
-   
-    
+    func getBlogFeedByCategory(category: String, resultHandler: @escaping (ResposeData<GetBlogByCategory?>) -> ()) {
+        self.blogApiService.getBlogFeedByCategory(category: category, resultHandler: resultHandler)
+    }
+    func likeUnlikeBlog(blogId: String, resultHandler: @escaping (ResposeData<BlogLikeModel?>) -> ()) {
+        self.blogApiService.likeUnlikeBlog(blogId: blogId, resultHandler: resultHandler)
+    }
 }

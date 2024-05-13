@@ -372,5 +372,69 @@
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "BBDA2C4E-5EAF-4153-A6A1-F0D3EA87C995"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "226"
+            endingLineNumber = "226"
+            landmarkName = "likeunlikeBlog(blogId:)"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "BBDA2C4E-5EAF-4153-A6A1-F0D3EA87C995 - 65a447b17a78192b"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "buzzmash_ios.BlogViewModel.likeunlikeBlog(blogId: Swift.String) -&gt; ()"
+                  moduleName = "buzzmash-ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rishisharyal/Documents/buzzmash-ios/buzzmash-ios/core/home_tab/view_model/blog.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "226"
+                  endingLineNumber = "226"
+                  offsetFromSymbolStart = "140">
+               </Location>
+               <Location
+                  uuid = "BBDA2C4E-5EAF-4153-A6A1-F0D3EA87C995 - 3389134cdad490ba"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (buzzmash_ios.ResposeData&lt;Swift.Optional&lt;buzzmash_ios.BlogLikeModel&gt;&gt;) -&gt; () in buzzmash_ios.BlogViewModel.likeunlikeBlog(blogId: Swift.String) -&gt; ()"
+                  moduleName = "buzzmash-ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rishisharyal/Documents/buzzmash-ios/buzzmash-ios/core/home_tab/view_model/blog.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "227"
+                  endingLineNumber = "227"
+                  offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "FCCD6095-C57C-4875-90A9-F063854B93B0"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/core/home_tab/view/home_page.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "154"
+            endingLineNumber = "154"
+            landmarkName = "body"
+            landmarkType = "24">
+         </BreakpointContent>
+      </BreakpointProxy>
    </Breakpoints>
 </Bucket>

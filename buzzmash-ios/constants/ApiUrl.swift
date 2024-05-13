@@ -21,6 +21,7 @@ class ApiUrl {
     static let updateProfile = baseUrl + "user/updateProfile"
     static let fetchProfile = baseUrl + "user/profile"
     static let createBlog = baseUrl + "blog/create-blog"
-    
+    static let getBlogByCategory = baseUrl + "blog/getBlogByCategory"
+    static let likeBlog = baseUrl + "blog/like"
     
 }

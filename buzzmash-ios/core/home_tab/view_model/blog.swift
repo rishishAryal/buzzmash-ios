@@ -25,7 +25,7 @@ class BlogViewModel:ObservableObject {
     @Published var updateBlogIsLoading:Bool = false
     @Published var updateBlogResponse:String = ""
     @Published var updatedBlog:UpdatedBlog?
-    
+    @Published var getFeedByCategory:GetBlogByCategory?
     
 
     final var blogRepo:BlogApiServiceRepo
@@ -194,6 +194,37 @@ class BlogViewModel:ObservableObject {
                 self.updateBlogIsLoading = false
                 completion(true)
             }
+        }
+    }
+    
+    
+    func getFeedByCategory(category: String,completion :@escaping(_ isSuccess: Bool)-> ()){
+        self.getBlogFeedIsLoading = true
+        self.requiredBlogFeed = []
+        self.getBlogFeed = nil
+        self.blogRepo.getBlogFeedByCategory(category: category) { response in
+            self.getFeedByCategory = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.getBlogFeedResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.getBlogFeedResponse = ""
+                    self.getBlogFeedIsLoading = false
+                    completion(false)
+
+                    
+                }
+            } else {
+                self.requiredBlogFeed = self.getFeedByCategory?.blogs ?? []
+                self.getBlogFeedIsLoading = false
+                completion(true)
+            }
+        }
+        
+    }
+    
+    func likeunlikeBlog (blogId:String) {
+        self.blogRepo.likeUnlikeBlog(blogId: blogId) { response in
+           
         }
     }
 
