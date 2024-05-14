@@ -14,8 +14,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "68"
-            endingLineNumber = "68"
+            startingLineNumber = "76"
+            endingLineNumber = "76"
             landmarkName = "getCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
             landmarkName = "getFeed(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "92"
-            endingLineNumber = "92"
+            startingLineNumber = "100"
+            endingLineNumber = "100"
             landmarkName = "getFeed(completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "78"
-            endingLineNumber = "78"
+            startingLineNumber = "86"
+            endingLineNumber = "86"
             landmarkName = "getCategory()"
             landmarkType = "7">
          </BreakpointContent>
@@ -174,8 +174,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "126"
+            endingLineNumber = "126"
             landmarkName = "create(title:category:description:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -190,8 +190,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "116"
-            endingLineNumber = "116"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "create(title:category:description:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -206,8 +206,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "215"
-            endingLineNumber = "215"
+            startingLineNumber = "223"
+            endingLineNumber = "223"
             landmarkName = "update(author:title:description:category:thumbnail:id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -222,8 +222,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "206"
-            endingLineNumber = "206"
+            startingLineNumber = "214"
+            endingLineNumber = "214"
             landmarkName = "update(author:title:description:category:thumbnail:id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -238,8 +238,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "217"
-            endingLineNumber = "217"
+            startingLineNumber = "225"
+            endingLineNumber = "225"
             landmarkName = "update(author:title:description:category:thumbnail:id:completion:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -382,8 +382,8 @@
             filePath = "buzzmash-ios/core/home_tab/view_model/blog.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "248"
-            endingLineNumber = "248"
+            startingLineNumber = "256"
+            endingLineNumber = "256"
             landmarkName = "likeunlikeBlog(blogId:completion:)"
             landmarkType = "7">
             <Locations>
@@ -416,6 +416,54 @@
                   startingLineNumber = "227"
                   endingLineNumber = "227"
                   offsetFromSymbolStart = "64">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7A53055A-5C71-4ECD-9095-C24171BBB19A"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "buzzmash-ios/helpers/AppInitVM.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "69"
+            endingLineNumber = "69"
+            landmarkName = "getUserProfile()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "7A53055A-5C71-4ECD-9095-C24171BBB19A - d29824b6098cee3d"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (buzzmash_ios.ResposeData&lt;Swift.Optional&lt;buzzmash_ios.UserProfile&gt;&gt;) -&gt; () in buzzmash_ios.AppInitVM.getUserProfile() -&gt; ()"
+                  moduleName = "buzzmash-ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rishisharyal/Documents/buzzmash-ios/buzzmash-ios/helpers/AppInitVM.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "70"
+                  endingLineNumber = "70"
+                  offsetFromSymbolStart = "1428">
+               </Location>
+               <Location
+                  uuid = "7A53055A-5C71-4ECD-9095-C24171BBB19A - d29824b6098cee1e"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "closure #1 (buzzmash_ios.ResposeData&lt;Swift.Optional&lt;buzzmash_ios.UserProfile&gt;&gt;) -&gt; () in buzzmash_ios.AppInitVM.getUserProfile() -&gt; ()"
+                  moduleName = "buzzmash-ios"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/rishisharyal/Documents/buzzmash-ios/buzzmash-ios/helpers/AppInitVM.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "69"
+                  endingLineNumber = "69"
+                  offsetFromSymbolStart = "932">
                </Location>
             </Locations>
          </BreakpointContent>

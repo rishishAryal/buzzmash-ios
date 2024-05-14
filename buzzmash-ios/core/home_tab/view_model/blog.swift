@@ -43,6 +43,14 @@ class BlogViewModel:ObservableObject {
     @Published var addCommentisLoading:Bool = false
     @Published var addCommentResponse:String = ""
     @Published var addComment:PostComment?
+    
+    @Published var deleteCommentisLoading:Bool = false
+    @Published var deleteCommentResponse:String = ""
+    @Published var deleteComment:DeleteComment?
+    
+    @Published var updateCommentisLoading:Bool = false
+    @Published var updateCommentResponse:String = ""
+    @Published var updateComment:UpdateComment?
 
     
     
@@ -312,4 +320,68 @@ class BlogViewModel:ObservableObject {
         }
     }
     
+    
+    func deleteComment(commentId:String){
+        self.deleteCommentisLoading = true
+        self.blogRepo.deleteComment(commentId: commentId) { response in
+            self.deleteComment = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.deleteCommentResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.deleteCommentResponse = ""
+                    self.deleteCommentisLoading = false
+                   
+
+                    
+                }
+            } else {
+                
+                
+                
+                
+                let index = self.requiredComment.firstIndex(where: {$0.id == commentId })
+                
+                if let i = index {
+                    self.requiredComment.remove(at: i)
+                }
+                
+                self.deleteCommentisLoading = false
+            }
+            
+        }
+    }
+    
+    
+    func editComment(commentId:String, comment:String, completion:@escaping(_ success: Bool)->()){
+        self.updateCommentisLoading = true
+        self.blogRepo.updateComment(commentId: commentId, comment: comment) { response in
+            self.updateComment = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.updateCommentResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.updateCommentResponse = ""
+                    self.updateCommentisLoading = false
+                   
+                    completion(false)
+
+                    
+                }
+            } else {
+                
+                
+                
+                
+                let index = self.requiredComment.firstIndex(where: {$0.id == commentId })
+                
+                if let i = index {
+                    self.requiredComment[i].comment = comment
+                }
+                
+                self.updateCommentisLoading = false
+                completion(true)
+
+            }
+            
+        }
+    }
 }

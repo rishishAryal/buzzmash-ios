@@ -8,18 +8,19 @@
 import Foundation
 
 struct GetCommentModel: Codable {
-    let message: String
-    let comments: [Comment]
-    let success: Bool
+    var message: String
+    var comments: [Comment]
+    var success: Bool
 }
 
 // MARK: - Comment
 struct Comment: Codable {
-    let id, userID, blogID, comment: String
-    let name: String
-    let profilePicture: String
-    let createdAt, updatedAt: String
-    let v: Int
+    var id, userID, blogID: String
+    var comment:String
+    var name: String
+    var profilePicture: String
+    var createdAt, updatedAt: String
+    var v: Int
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -39,3 +40,13 @@ struct PostComment: Codable {
 
 // MARK: - Comment
 
+
+struct DeleteComment: Codable {
+    let message: String
+    let success: Bool
+}
+
+struct UpdateComment: Codable {
+    let message: String
+    let success: Bool
+}

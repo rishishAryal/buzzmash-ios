@@ -20,6 +20,8 @@ protocol BlogApiServiceRepoProtocol {
     func likeUnlikeBlog(blogId: String , resultHandler: @escaping (_ responseData: ResposeData<BlogLikeModel?>) -> () )
     func getComments(blogId:String,resultHandler: @escaping (_ responseData: ResposeData<GetCommentModel?>) -> ())
     func postCommen(blogId: String, comment:String,resultHandler: @escaping (_ responseData: ResposeData<PostComment?>) -> () )
+    func deleteComment(commentId:String,resultHandler: @escaping (_ responseData: ResposeData<DeleteComment?>) -> ())
+    func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ())
 
 
 
@@ -28,6 +30,8 @@ protocol BlogApiServiceRepoProtocol {
 
 
 final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
+    
+    
  
     
 
@@ -78,4 +82,11 @@ final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
     func postCommen(blogId: String, comment: String, resultHandler: @escaping (ResposeData<PostComment?>) -> ()) {
         self.blogApiService.postCommen(blogId: blogId, comment: comment, resultHandler: resultHandler)
     }
+    func deleteComment(commentId: String, resultHandler: @escaping (ResposeData<DeleteComment?>) -> ()) {
+        self.blogApiService.deleteComment(commentId: commentId, resultHandler: resultHandler)
+    }
+    func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ()) {
+        self.blogApiService.updateComment(commentId: commentId, comment: comment, resultHandler: resultHandler)
+    }
+
 }

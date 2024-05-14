@@ -38,12 +38,13 @@ class AppInitVM:ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
                     self.getBlogCategoryResponse = ""
                     self.getBlogCategoryIsLoading = false
-
+completion(false)
                     
                 }
             } else {
                 self.requiredBlogCategory = self.getBlogCategory?.categories ?? []
                 self.getBlogCategoryIsLoading = false
+                completion(true)
             }
         }
         

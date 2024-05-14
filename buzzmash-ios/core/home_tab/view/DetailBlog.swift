@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct DetailBlog: View {
-    @State var comment:String = ""
+    @State var commentText:String = ""
     @State var blogId:String
     @State var profileImage:String
     @State var author:String
@@ -19,9 +19,17 @@ struct DetailBlog: View {
     @State var thumbnail:String
     @ObservedObject var blogVM:BlogViewModel
     @FocusState var keyboardFocus
+    @State var selectedCommentId:String = ""
+    @State var selectedCommentIdForEdit:String = ""
+    @State var isEditCommentSelected:Bool = false
     
-    
-    
+    func getUserId()->String {
+        if let id = UserDefaults.standard.string(forKey: "userId") {
+            return id
+        } else {
+            return "no id"
+        }
+    }
     
     func formatDateString(_ dateString: String) -> String {
         // Create a DateFormatter instance
@@ -106,22 +114,53 @@ struct DetailBlog: View {
                         Spacer()
                     }.padding(.leading)
                     HStack{
-                        TextField("Give your Thoughts", text: $comment, axis: .vertical)
+                        TextField("Give your Thoughts", text: $commentText, axis: .vertical)
                             .textFieldStyle(.roundedBorder)
                             .focused($keyboardFocus)
                             
-                        if !comment.isEmpty {
+                        
+                        
+                        if isEditCommentSelected {
                             Button(action: {
-                                blogVM.addComment(blogId: blogId, comment: comment) { Bool in
-                                    keyboardFocus = false
-                                    comment = ""
+                                
+                                
+                                
+                                blogVM.editComment(commentId: selectedCommentIdForEdit, comment: commentText) { success in
+                                    if success {
+                                        selectedCommentIdForEdit = ""
+                                        commentText = ""
+                                        isEditCommentSelected = false
+                                        keyboardFocus = false
+
+                                    }
+                                  
                                 }
                             }, label: {
                                 RoundedRectangle(cornerRadius: 15).frame(width: 80).overlay {
-                                    Text("Done").foregroundStyle(.white)
+                                    Text("Edit").foregroundStyle(.white)
                                 }
                             })
                         }
+                        else {
+                            
+                            if !commentText.isEmpty {
+                                Button(action: {
+                                    
+                                    
+                                    
+                                    blogVM.addComment(blogId: blogId, comment: commentText) { Bool in
+                                        keyboardFocus = false
+                                        commentText = ""
+                                    }
+                                }, label: {
+                                    RoundedRectangle(cornerRadius: 15).frame(width: 80).overlay {
+                                        Text("Done").foregroundStyle(.white)
+                                    }
+                                })
+                            }
+                        }
+                        
+               
                        
                     }.padding()
                     
@@ -149,11 +188,57 @@ struct DetailBlog: View {
                                         HStack{
                                             Text(comment.comment).font(.footnote).fontWeight(.light)
                                             Spacer()
-                                            Text(formatDateString(comment.createdAt)).foregroundStyle(.gray).font(.footnote)
+                                            if comment.userID == getUserId() {
+                                                HStack{
+                                                    Image(systemName: "pencil").onTapGesture {
+                                                        isEditCommentSelected = true
+                                                        commentText = comment.comment
+                                                        selectedCommentIdForEdit = comment.id
+                                                        keyboardFocus = true
+
+
+                                                    }
+                                                    Button{
+//                                                        blogVM.deleteComment(commentId: comment.id)
+                                                        selectedCommentId = comment.id
+                                                    }
+                                                        
+                                                     label: {
+                                                        Image(systemName: "bin.xmark.fill").foregroundStyle(.red)
+                                                          
+                                                    }
+
+                                                 
+                                                }.font(.caption)  
+                                                  
+                                                
+                                            }
                                         }
                                     }
                                     Spacer()
-                                }
+                                }  .overlay(alignment: .bottom) {
+                                    
+                                    if selectedCommentId == comment.id {
+                                        VStack {
+                                            
+                                                Text("Delete this comment?")
+                                            HStack(spacing: 20) {
+                                                    Text("NO") .onTapGesture {
+                                                        selectedCommentId = ""
+                                                    }
+                                                Text("YES").foregroundStyle(.red).onTapGesture {
+                                                    blogVM.deleteComment(commentId: comment.id)
+                                                    selectedCommentId = ""
+                                                }
+                                                }
+                                            
+                                            
+                                        }.frame(width: 150, height: 50).font(.footnote).padding(5).background(.gray).zIndex(10).offset(x:0,y:13)
+                                    }
+                             
+                                   
+                                
+                            }
                             }
 
                             

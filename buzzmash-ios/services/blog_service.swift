@@ -18,7 +18,8 @@ protocol BlogApiServiceProtocol {
     func likeUnlikeBlog(blogId: String , resultHandler: @escaping (_ responseData: ResposeData<BlogLikeModel?>) -> () )
     func getComments(blogId:String,resultHandler: @escaping (_ responseData: ResposeData<GetCommentModel?>) -> ())
     func postCommen(blogId: String, comment:String,resultHandler: @escaping (_ responseData: ResposeData<PostComment?>) -> () )
-    
+    func deleteComment(commentId:String,resultHandler: @escaping (_ responseData: ResposeData<DeleteComment?>) -> ())
+    func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ())
 
 
 //    func addBlogThumbnail()
@@ -29,9 +30,13 @@ protocol BlogApiServiceProtocol {
 
 final class BlogApiService:BlogApiServiceProtocol {
 
+    
+
+    
+
   
     
-   
+   //https://buzzmash.onrender.com/api/v1/blog/deleteComment/6642feda4fe74e3fb5db6957
     
  
     
@@ -53,6 +58,8 @@ final class BlogApiService:BlogApiServiceProtocol {
     @Published var like:BlogLikeModel?
     @Published var comment:GetCommentModel?
     @Published var newComment:PostComment?
+    @Published var deleteComment:DeleteComment?
+    @Published var updateComment:UpdateComment?
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
         guard let url = URL(string: ApiUrl.getBlogCategory) else {
@@ -305,5 +312,66 @@ final class BlogApiService:BlogApiServiceProtocol {
         }
     }
     
+    func deleteComment(commentId:String,resultHandler: @escaping (ResposeData<DeleteComment?>) -> ()) {
+        guard let url = URL(string: "https://buzzmash.onrender.com/api/v1/blog/deleteComment/\(commentId)" ) else {
+            print("Invalid URL")
+            return
+            
+           
+        }
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.delete, url: url  )
+                .decode(type: DeleteComment.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<DeleteComment?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.deleteComment = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<DeleteComment?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.deleteComment ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
+        
+    }
     
+    func updateComment(commentId: String, comment: String, resultHandler: @escaping (ResposeData<UpdateComment?>) -> ()) {
+        guard let url = URL(string: "https://buzzmash.onrender.com/api/v1/blog/updateComment/\(commentId)" ) else {
+            print("Invalid URL")
+            return
+            
+           
+        }
+        let credentials = ["comment": comment] as [String:Any]
+        
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.put, url: url, credentials: credentials  )
+                .decode(type: UpdateComment.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<UpdateComment?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.updateComment = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<UpdateComment?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.updateComment ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
+    }
 }
