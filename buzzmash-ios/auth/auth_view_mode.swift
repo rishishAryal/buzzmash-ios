@@ -21,7 +21,9 @@ class AuthViewModel:ObservableObject {
     @Published var changePasswordResponseMessage:String =  ""
     @Published var changePassword:ChangePasswordModel?
     
-   
+    @Published var isRegisterLoading:Bool = false
+    @Published var registerResponseMessage:String =  ""
+    @Published var register:AuthModel?
     
     final var authRepo:AuthApiServiceRepo
     
@@ -35,12 +37,12 @@ class AuthViewModel:ObservableObject {
     }
     
     
-    func logout() {
+    func logout(completion:@escaping(_ logout:Bool)->()) {
         UserDefaults.standard.removeObject(forKey: ApplicationText.token)
         self.showSplash()
         self.getToken()
         self.isLoggedIn()
-
+        completion(true)
 
     }
     
@@ -92,6 +94,8 @@ class AuthViewModel:ObservableObject {
             } else {
                 self.isLoginLoading = false
                 UserDefaults.standard.set(self.login!.jwtToken, forKey: ApplicationText.token)
+                UserDefaults.standard.set(self.login?.user.id, forKey: "userId")
+
                 self.isUserLogin = true
 
             }
@@ -100,6 +104,34 @@ class AuthViewModel:ObservableObject {
         
     }
 
+    
+    
+    func registerUser(email:String,password:String,name:String,username:String,DOB:String){
+        
+        self.isRegisterLoading = true
+        
+        self.authRepo.register(email: email, password: password, username: username,name: name,DOB: DOB) { response in
+            self.register = response.responseData
+            
+            if(response.errorMessage != "" || !response.isSucess){
+                self.registerResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.isRegisterLoading = false
+                    self.registerResponseMessage = ""
+
+                    
+                    
+                }
+            } else {
+                self.isRegisterLoading = false
+                UserDefaults.standard.set(self.register!.jwtToken, forKey: ApplicationText.token)
+                UserDefaults.standard.set(self.register?.user.id, forKey: "userId")
+
+                self.isUserLogin = true
+
+            }
+        }
+    }
     
     
     func changePassword(oldPassword:String , newPassword:String, completion: @escaping(_ isSuccess: Bool)->()) {

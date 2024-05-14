@@ -25,9 +25,10 @@ struct profile_view: View {
                     Spacer()
                     
                     NavigationLink {
-                        Settings(authVm: authVm, userVM: userVm).navigationTitle("Settings")
+                        Settings(authVm: authVm, userVM: userVm, blogVM: blogVM).navigationTitle("Settings")
                     } label: {
                         Image(systemName: "gear").font(.title)
+                        
 
                     }
 

@@ -11,6 +11,7 @@ struct FeedView:View {
     @ObservedObject var blogVM:BlogViewModel
     @State var selectedId:String = "all"
     @Namespace var namesapce
+    @ObservedObject var authVm: AuthViewModel
     
     var appInitVM:AppInitVM = AppInitVM.appInitVM
     
@@ -230,7 +231,10 @@ struct FeedView:View {
                                 
                                 
                             }
-                        }.refreshable {
+                        }
+                        
+                        
+                        .refreshable {
                             blogVM.getFeed { Bool in
                                 
                             }
@@ -241,6 +245,18 @@ struct FeedView:View {
         Spacer()
                 
                 
+            }.onAppear {
+                if (authVm.isUserLogin)
+                {
+                    if !blogVM.feedApiHited {
+                        blogVM.getFeed() {_ in
+                            
+                            
+                        }
+                    }
+                }
+             
+              
             }
         }
 

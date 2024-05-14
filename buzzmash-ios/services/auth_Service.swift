@@ -11,6 +11,7 @@ import Combine
 protocol AuthApiServiceProtocol {
     func login(email: String, password:String, resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
     func changePassword(oldPassword: String, newPassword:String, resultHandler: @escaping (_ responseData: ResposeData<ChangePasswordModel?>) -> ())
+    func register(email: String, password:String, username:String,name:String,DOB:String,resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
     
 
 
@@ -18,6 +19,8 @@ protocol AuthApiServiceProtocol {
 
 
 final class AuthApiService : AuthApiServiceProtocol {
+ 
+    
   
     
   
@@ -94,6 +97,34 @@ final class AuthApiService : AuthApiServiceProtocol {
 
     }
     
+    
+    func register(email: String, password: String, username: String, name: String, DOB: String, resultHandler: @escaping (ResposeData<AuthModel?>) -> ()) {
+        guard let url = URL(string: ApiUrl.register) else {
+            print("Invalid URL")
+            return
+        }
+        let credentials = ["email": email , "password": password, "name":name, "username": username, "DOB": DOB]  as [String: Any]
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.post, url: url, credentials: credentials  )
+                .decode(type: AuthModel.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<AuthModel?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.auth = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<AuthModel?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.auth ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
+    }
 
     
 }

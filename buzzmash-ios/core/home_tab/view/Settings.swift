@@ -10,6 +10,7 @@ import SwiftUI
 struct Settings: View {
     @ObservedObject var authVm: AuthViewModel
     @ObservedObject var userVM:UserViewModel
+    @ObservedObject var blogVM:BlogViewModel
 
 
     var body: some View {
@@ -40,7 +41,14 @@ struct Settings: View {
                     }.contentShape(RoundedRectangle(cornerRadius: 10))
 
                     .onTapGesture {
-                            authVm.logout()
+                        
+                        authVm.logout() {s in
+                            
+                            if s {
+                                blogVM.feedApiHited = false
+                            }
+
+                        }
                         
                     }
                 }.listStyle(.automatic)
@@ -253,7 +261,7 @@ struct EditUserDetails:View {
             Spacer()
         }.onAppear(perform: {
             name = userVM.profile?.profile.name ?? ""
-            username = userVM.profile?.profile.name ?? ""
+            username = userVM.profile?.profile.username ?? ""
             insta = userVM.profile?.profile.instagram ?? ""
             twitter = userVM.profile?.profile.twitter ?? ""
             facebook = userVM.profile?.profile.facebook ?? ""

@@ -13,6 +13,7 @@ struct register: View {
     @State var name:String = ""
     @State var username:String = ""
     @State private var birthDate = Date.now
+    @ObservedObject var authVm:AuthViewModel
 
     var body: some View {
         
@@ -48,10 +49,17 @@ struct register: View {
                     .background(RoundedRectangle(cornerRadius: 10).stroke())
                     .padding(.horizontal)
                 
-                Button(action: {}, label: {
+                Button(action: {
+                    authVm.registerUser(email: email, password: password, name: name, username: username, DOB: birthDate.toFormattedString())
+                }, label: {
                     RoundedRectangle(cornerRadius: 10).frame(height: 40).padding(.horizontal)
                         .overlay {
-                            Text("Register").foregroundStyle(.white).bold()
+                            if authVm.isRegisterLoading {
+                                ProgressView()
+                            } else {
+                                Text("Register").foregroundStyle(.white).bold()
+
+                            }
                         }
                     
                 })
@@ -65,9 +73,7 @@ struct register: View {
     }
 }
 
-#Preview {
-    register()
-}
+
 
 extension Date {
     func toFormattedString() -> String {

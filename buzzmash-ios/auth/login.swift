@@ -10,6 +10,7 @@ import SwiftUI
 struct login: View {
     @State var email:String = ""
     @State var password:String = ""
+    @State var openRegisterSheet:Bool = false
     @EnvironmentObject var authVm:AuthViewModel
     var body: some View {
         
@@ -52,7 +53,12 @@ struct login: View {
             
             VStack(alignment:.leading){
                 Text("Don't have an account?")
-                Text("Tap here to Register.").foregroundStyle(.blue)
+                Text("Tap here to Register.").foregroundStyle(.blue).onTapGesture {
+                    openRegisterSheet.toggle()
+                }
+                .sheet(isPresented: $openRegisterSheet) {
+                    register(authVm: authVm)
+                }
             }.font(.caption).padding()
                 
             

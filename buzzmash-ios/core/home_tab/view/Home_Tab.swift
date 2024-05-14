@@ -28,11 +28,11 @@ struct HomeTab: View {
         
         
         if(authVm.showSplashScreen) {
-            SplashScreen()
+            SplashScreen().environmentObject(authVm)
         } else {
             if (authVm.isUserLogin) {
                 TabView {
-                    FeedView(blogVM: blogVM)
+                    FeedView(blogVM: blogVM, authVm: authVm)
                     .tabItem {
                         
                         VStack{
@@ -63,6 +63,10 @@ struct HomeTab: View {
                         
                     }
                     
+                }.onAppear {
+                    if (authVm.isUserLogin) {
+//                        if (b)
+                    }
                 }
             } else {
                 login().environmentObject(authVm)

@@ -52,7 +52,7 @@ class BlogViewModel:ObservableObject {
     @Published var updateCommentResponse:String = ""
     @Published var updateComment:UpdateComment?
 
-    
+    @Published var feedApiHited:Bool = false
     
     
     
@@ -62,11 +62,7 @@ class BlogViewModel:ObservableObject {
     init(blogRepo: BlogApiServiceRepo) {
        
         self.blogRepo = blogRepo
-        self.getFeed() {_ in
-            
-//            self.getCategory()
-
-        }
+  
     }
     
     
@@ -92,6 +88,7 @@ class BlogViewModel:ObservableObject {
     
     
     func getFeed(completion :@escaping(_ isSuccess: Bool)-> ()){
+        self.feedApiHited = true
         self.getBlogFeedIsLoading = true
         self.requiredBlogFeed = []
         self.getBlogFeed = nil
