@@ -27,7 +27,28 @@ class BlogViewModel:ObservableObject {
     @Published var updatedBlog:UpdatedBlog?
     @Published var getFeedByCategory:GetBlogByCategory?
     
+    
+    
+    
+    @Published var islikeloading:Bool = false
+    @Published var likeresponse:String = ""
+    @Published var like:BlogLikeModel?
+    
+    @Published var getCommentisLoading:Bool = false
+    @Published var getCommentResponse:String = ""
+    @Published var getComment:GetCommentModel?
+    @Published var requiredComment:[Comment] = []
+    
+    
+    @Published var addCommentisLoading:Bool = false
+    @Published var addCommentResponse:String = ""
+    @Published var addComment:PostComment?
 
+    
+    
+    
+    
+    
     final var blogRepo:BlogApiServiceRepo
     
     init(blogRepo: BlogApiServiceRepo) {
@@ -222,11 +243,73 @@ class BlogViewModel:ObservableObject {
         
     }
     
-    func likeunlikeBlog (blogId:String) {
+    func likeunlikeBlog (blogId:String, completion: @escaping(_ Success:Bool)->()) {
+        self.islikeloading = true
         self.blogRepo.likeUnlikeBlog(blogId: blogId) { response in
-           
+            self.like = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.likeresponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.likeresponse = ""
+                    self.islikeloading = false
+                    completion(false)
+
+                    
+                }
+            } else {
+                self.islikeloading = false
+                completion(true)
+            }
+        }
+    }
+    
+    func getComments(blogId:String, completion:@escaping(_ success: Bool)->()){
+        self.requiredComment = []
+        self.getCommentisLoading = true
+        self.blogRepo.getComments(blogId: blogId) { response in
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.getCommentResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.getCommentResponse = ""
+                    self.getCommentisLoading = false
+                    completion(false)
+
+                    
+                }
+            } else {
+                
+                
+                
+                self.requiredComment = response.responseData?.comments ?? []
+                completion(true)
+                self.getCommentisLoading = false
+            }
         }
     }
 
+    
+    func addComment(blogId:String, comment:String,completion:@escaping(_ success: Bool)->() ) {
+        self.addCommentisLoading = true
+        self.blogRepo.postCommen(blogId: blogId, comment: comment) { response in
+            self.addComment = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                self.addCommentResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.addCommentResponse = ""
+                    self.addCommentisLoading = false
+                    completion(false)
+
+                    
+                }
+            } else {
+                
+                
+                
+                self.requiredComment.append(response.responseData!.comment)
+                completion(true)
+                self.addCommentisLoading = false
+            }
+        }
+    }
     
 }

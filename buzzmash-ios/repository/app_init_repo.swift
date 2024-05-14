@@ -9,6 +9,7 @@ import Foundation
 
 protocol AppInitRepoProtocol {
     func getBlogCategory(resultHandler: @escaping (_ responseData: ResposeData<GetBlogCategory?>) -> ())
+    func profile(resultHandler: @escaping (_ responseData: ResposeData<UserProfile?>) -> ())
 
 }
 
@@ -16,6 +17,8 @@ protocol AppInitRepoProtocol {
 
 
 final class AppInitRepo:AppInitRepoProtocol {
+    
+    
    
     
     var appInitRepo:AppInitService
@@ -27,6 +30,10 @@ final class AppInitRepo:AppInitRepoProtocol {
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
         self.appInitRepo.getBlogCategory(resultHandler: resultHandler)
+    }
+    
+    func profile(resultHandler: @escaping (ResposeData<UserProfile?>) -> ()) {
+        self.appInitRepo.profile(resultHandler: resultHandler)
     }
     
 }

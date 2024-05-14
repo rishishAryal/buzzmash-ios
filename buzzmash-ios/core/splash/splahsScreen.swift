@@ -20,7 +20,11 @@ struct SplashScreen: View {
         }.foregroundStyle(.white).frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
             .background(LinearGradient(colors: [.blue.opacity(0.8), .green.opacity(0.8)], startPoint: .topLeading, endPoint: .bottomTrailing)).ignoresSafeArea()
             .onAppear(perform: {
-                appInitVM.getCategory()
+                
+                appInitVM.getCategory() {success  in
+                    
+                    appInitVM.getUserProfile()
+                }
             })
     }
 }

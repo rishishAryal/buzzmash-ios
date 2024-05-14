@@ -22,6 +22,8 @@ struct Blog: Codable {
     var likeCount, commentCount: Int
     var createdAt, updatedAt: String
     var v: Int
+    var hasLiked:Bool
+    var authorProfile:String
 
     enum CodingKeys: String, CodingKey {
         case id = "_id"
@@ -29,6 +31,8 @@ struct Blog: Codable {
         case userID = "userId"
         case likeCount, commentCount, createdAt, updatedAt
         case v = "__v"
+        case hasLiked
+        case authorProfile
     }
 }
 

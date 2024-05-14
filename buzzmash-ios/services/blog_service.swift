@@ -16,6 +16,9 @@ protocol BlogApiServiceProtocol {
     func updateBlog (author: String,title: String , description: String, category: String ,thumbnail:String,id:String,resultHandler: @escaping (_ responseData: ResposeData<UpdatedBlog?>) -> ())
     func getBlogFeedByCategory(category:String,resultHandler: @escaping (_ responseData: ResposeData<GetBlogByCategory?>) -> ())
     func likeUnlikeBlog(blogId: String , resultHandler: @escaping (_ responseData: ResposeData<BlogLikeModel?>) -> () )
+    func getComments(blogId:String,resultHandler: @escaping (_ responseData: ResposeData<GetCommentModel?>) -> ())
+    func postCommen(blogId: String, comment:String,resultHandler: @escaping (_ responseData: ResposeData<PostComment?>) -> () )
+    
 
 
 //    func addBlogThumbnail()
@@ -25,6 +28,7 @@ protocol BlogApiServiceProtocol {
 
 
 final class BlogApiService:BlogApiServiceProtocol {
+
   
     
    
@@ -34,7 +38,7 @@ final class BlogApiService:BlogApiServiceProtocol {
 
     
    
-    
+    //https://buzzmash.onrender.com/api/v1/blog/getComments/662a338dda505f5eebbabf22
   
     
    
@@ -47,6 +51,8 @@ final class BlogApiService:BlogApiServiceProtocol {
     @Published var updateBlog:UpdatedBlog?
     @Published var blogFeedByCategory:GetBlogByCategory?
     @Published var like:BlogLikeModel?
+    @Published var comment:GetCommentModel?
+    @Published var newComment:PostComment?
     
     func getBlogCategory(resultHandler: @escaping (ResposeData<GetBlogCategory?>) -> ()) {
         guard let url = URL(string: ApiUrl.getBlogCategory) else {
@@ -239,6 +245,65 @@ final class BlogApiService:BlogApiServiceProtocol {
         
     }
     
- 
+    func postCommen(blogId: String, comment: String, resultHandler: @escaping (ResposeData<PostComment?>) -> ()) {
+        guard let url = URL(string: ApiUrl.comment) else {
+            print("Invalid URL")
+            return
+        }
+        let credentials = ["blogId": blogId, "comment": comment] as [String:Any]
+
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.post, url: url, credentials: credentials)
+                .decode(type: PostComment.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        resultHandler (ResposeData<PostComment?>(isLoading: false, errorMessage:  String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue:    {[weak self] (receiveData) in
+                    self?.newComment  = receiveData
+                    
+                    resultHandler (ResposeData(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.newComment))
+                    
+                })
+        } catch {
+            print("The file could not be loaded")
+
+        }
+    }
+    
+    func getComments(blogId:String,resultHandler: @escaping (ResposeData<GetCommentModel?>) -> ()) {
+        guard let url = URL(string: "https://buzzmash.onrender.com/api/v1/blog/getComments/\(blogId)" ) else {
+            print("Invalid URL")
+            return
+            
+           
+        }
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.get, url: url  )
+                .decode(type: GetCommentModel.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<GetCommentModel?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.comment = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<GetCommentModel?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.comment ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
+    }
+    
     
 }

@@ -40,6 +40,8 @@
 		291E90802BEE342C00331195 /* app_init_repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907F2BEE342C00331195 /* app_init_repo.swift */; };
 		291E90832BEE34D400331195 /* AppInitVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90822BEE34D400331195 /* AppInitVM.swift */; };
 		291E90892BF13D7800331195 /* ChangeProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90882BF13D7800331195 /* ChangeProfilePicture.swift */; };
+		298E862B2BF239F40079BBB9 /* DetailBlog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E862A2BF239F40079BBB9 /* DetailBlog.swift */; };
+		298E862D2BF241E40079BBB9 /* Comment_Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E862C2BF241E40079BBB9 /* Comment_Model.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -78,6 +80,8 @@
 		291E907F2BEE342C00331195 /* app_init_repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init_repo.swift; sourceTree = "<group>"; };
 		291E90822BEE34D400331195 /* AppInitVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInitVM.swift; sourceTree = "<group>"; };
 		291E90882BF13D7800331195 /* ChangeProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeProfilePicture.swift; sourceTree = "<group>"; };
+		298E862A2BF239F40079BBB9 /* DetailBlog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBlog.swift; sourceTree = "<group>"; };
+		298E862C2BF241E40079BBB9 /* Comment_Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment_Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -181,6 +185,7 @@
 				2913F5652BECE952008259C9 /* blog_feed.swift */,
 				2913F5712BECFA2A008259C9 /* Auth.swift */,
 				2913F57E2BED0D30008259C9 /* user_model.swift */,
+				298E862C2BF241E40079BBB9 /* Comment_Model.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				2913F5842BED3779008259C9 /* AddBlog.swift */,
 				291E907B2BEE327900331195 /* EditBlogView.swift */,
 				291E90882BF13D7800331195 /* ChangeProfilePicture.swift */,
+				298E862A2BF239F40079BBB9 /* DetailBlog.swift */,
 			);
 			path = view;
 			sourceTree = "<group>";
@@ -324,6 +330,7 @@
 			files = (
 				2913F56E2BECF9D3008259C9 /* auth_view_mode.swift in Sources */,
 				291E90892BF13D7800331195 /* ChangeProfilePicture.swift in Sources */,
+				298E862B2BF239F40079BBB9 /* DetailBlog.swift in Sources */,
 				2913F5852BED3779008259C9 /* AddBlog.swift in Sources */,
 				2913F5532BECDCC2008259C9 /* Home_Tab.swift in Sources */,
 				2913F5772BED022F008259C9 /* splahsScreen.swift in Sources */,
@@ -337,6 +344,7 @@
 				2913F5832BED35BC008259C9 /* Settings.swift in Sources */,
 				291E90802BEE342C00331195 /* app_init_repo.swift in Sources */,
 				2913F5792BED0C23008259C9 /* profile_view.swift in Sources */,
+				298E862D2BF241E40079BBB9 /* Comment_Model.swift in Sources */,
 				2913F5722BECFA2A008259C9 /* Auth.swift in Sources */,
 				2913F5392BECD931008259C9 /* ContentView.swift in Sources */,
 				2913F55E2BECDF0E008259C9 /* genric_response_data.swift in Sources */,
