@@ -9,7 +9,7 @@ import SwiftUI
 
 struct FeedView:View {
     @ObservedObject var blogVM:BlogViewModel
-    @State var selectedId:String = "all"
+    @State var selectedId:String = "All"
     @Namespace var namesapce
     @ObservedObject var authVm: AuthViewModel
     
@@ -68,7 +68,7 @@ struct FeedView:View {
                         HStack {
                             VStack(spacing: 5) {
                                 Text("All").bold()
-                                if (selectedId == "all"){
+                                if (selectedId == "All"){
                                     Rectangle().frame(height: 3)
                                         .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
                                 }
@@ -78,10 +78,24 @@ struct FeedView:View {
                                 
                             }.onTapGesture(perform: {
                                 withAnimation {
-                                    selectedId = "all"
-                                    blogVM.getFeed { Bool in
-                                        
+                                    selectedId = "All"
+                                    
+                                    if let feed = blogVM.categoryFeedMap[selectedId] {
+                                        if feed.isEmpty {
+                                            blogVM.getFeed { Bool in
+                                                
+                                            }
+                                        } else {
+                                            blogVM.requiredBlogFeed = feed
+
+                                        }
+                                    } else {
+                                        blogVM.getFeed { Bool in
+                                            
+                                        }
                                     }
+                                   
+                                   
                                 }
                                
                             })
@@ -91,7 +105,7 @@ struct FeedView:View {
                                 
                                 VStack(spacing: 5) {
                                     Text(cat.name).bold()
-                                    if (selectedId == cat.id){
+                                    if (selectedId == cat.name){
                                         Rectangle().frame(height: 3)
                                             .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
                                     }
@@ -102,10 +116,22 @@ struct FeedView:View {
                                 }
                                 .onTapGesture(perform: {
                                     withAnimation {
-                                        selectedId = cat.id
-                                        blogVM.getFeedByCategory(category: cat.name) { Bool in
-                                            
+                                        selectedId = cat.name
+                                        
+                                        if let feed = blogVM.categoryFeedMap[cat.name] {
+                                            if feed.isEmpty {
+                                                blogVM.getFeedByCategory(category: cat.name) { Bool in
+                                                    
+                                                }
+                                            } else {
+                                                blogVM.requiredBlogFeed = feed
+                                            }
+                                        } else {
+                                            blogVM.getFeedByCategory(category: cat.name) { Bool in
+                                                
+                                            }
                                         }
+                                      
 
                                     }
                                 })
@@ -235,9 +261,17 @@ struct FeedView:View {
                         
                         
                         .refreshable {
-                            blogVM.getFeed { Bool in
-                                
+                            if selectedId == "All"
+                            {
+                                blogVM.getFeed { Bool in
+                                    
+                                }
+                            } else {
+                                blogVM.getFeedByCategory(category: selectedId) { _ in
+                                    
+                                }
                             }
+                           
                         }
                     }
                 

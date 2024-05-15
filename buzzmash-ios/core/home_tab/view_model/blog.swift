@@ -26,7 +26,7 @@ class BlogViewModel:ObservableObject {
     @Published var updateBlogResponse:String = ""
     @Published var updatedBlog:UpdatedBlog?
     @Published var getFeedByCategory:GetBlogByCategory?
-    
+    @Published var categoryFeedMap:[String:[Blog]] = [:]
     
     
     
@@ -88,6 +88,7 @@ class BlogViewModel:ObservableObject {
     
     
     func getFeed(completion :@escaping(_ isSuccess: Bool)-> ()){
+        
         self.feedApiHited = true
         self.getBlogFeedIsLoading = true
         self.requiredBlogFeed = []
@@ -105,6 +106,8 @@ class BlogViewModel:ObservableObject {
                 }
             } else {
                 self.requiredBlogFeed = self.getBlogFeed?.blogs ?? []
+                self.categoryFeedMap["All"] = self.getBlogFeed?.blogs ?? []
+             
                 self.getBlogFeedIsLoading = false
                 completion(true)
             }
@@ -241,6 +244,8 @@ class BlogViewModel:ObservableObject {
                 }
             } else {
                 self.requiredBlogFeed = self.getFeedByCategory?.blogs ?? []
+                self.categoryFeedMap[category] = self.getFeedByCategory?.blogs ?? []
+
                 self.getBlogFeedIsLoading = false
                 completion(true)
             }

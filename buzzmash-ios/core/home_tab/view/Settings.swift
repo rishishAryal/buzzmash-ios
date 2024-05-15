@@ -46,6 +46,7 @@ struct Settings: View {
                             
                             if s {
                                 blogVM.feedApiHited = false
+                                blogVM.categoryFeedMap = [:]
                             }
 
                         }
