@@ -40,6 +40,7 @@
 		291E90802BEE342C00331195 /* app_init_repo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E907F2BEE342C00331195 /* app_init_repo.swift */; };
 		291E90832BEE34D400331195 /* AppInitVM.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90822BEE34D400331195 /* AppInitVM.swift */; };
 		291E90892BF13D7800331195 /* ChangeProfilePicture.swift in Sources */ = {isa = PBXBuildFile; fileRef = 291E90882BF13D7800331195 /* ChangeProfilePicture.swift */; };
+		295E6A582BF74A1700EEE2C7 /* ShimmerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 295E6A572BF74A1700EEE2C7 /* ShimmerView.swift */; };
 		298E862B2BF239F40079BBB9 /* DetailBlog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E862A2BF239F40079BBB9 /* DetailBlog.swift */; };
 		298E862D2BF241E40079BBB9 /* Comment_Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = 298E862C2BF241E40079BBB9 /* Comment_Model.swift */; };
 /* End PBXBuildFile section */
@@ -80,6 +81,7 @@
 		291E907F2BEE342C00331195 /* app_init_repo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = app_init_repo.swift; sourceTree = "<group>"; };
 		291E90822BEE34D400331195 /* AppInitVM.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppInitVM.swift; sourceTree = "<group>"; };
 		291E90882BF13D7800331195 /* ChangeProfilePicture.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangeProfilePicture.swift; sourceTree = "<group>"; };
+		295E6A572BF74A1700EEE2C7 /* ShimmerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerView.swift; sourceTree = "<group>"; };
 		298E862A2BF239F40079BBB9 /* DetailBlog.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailBlog.swift; sourceTree = "<group>"; };
 		298E862C2BF241E40079BBB9 /* Comment_Model.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Comment_Model.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -114,6 +116,7 @@
 		2913F5352BECD931008259C9 /* buzzmash-ios */ = {
 			isa = PBXGroup;
 			children = (
+				295E6A562BF74A0900EEE2C7 /* components */,
 				291E90812BEE34C500331195 /* helpers */,
 				2913F5672BECF496008259C9 /* auth */,
 				2913F54C2BECDC1A008259C9 /* constants */,
@@ -258,6 +261,14 @@
 			path = helpers;
 			sourceTree = "<group>";
 		};
+		295E6A562BF74A0900EEE2C7 /* components */ = {
+			isa = PBXGroup;
+			children = (
+				295E6A572BF74A1700EEE2C7 /* ShimmerView.swift */,
+			);
+			path = components;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -358,6 +369,7 @@
 				2913F5572BECDD8F008259C9 /* home_page.swift in Sources */,
 				2913F56B2BECF676008259C9 /* register.swift in Sources */,
 				2913F5742BECFDC1008259C9 /* auth_repo.swift in Sources */,
+				295E6A582BF74A1700EEE2C7 /* ShimmerView.swift in Sources */,
 				2913F57F2BED0D30008259C9 /* user_model.swift in Sources */,
 				2913F5602BECDF79008259C9 /* ApiUrl.swift in Sources */,
 				2913F5702BECF9E7008259C9 /* auth_Service.swift in Sources */,

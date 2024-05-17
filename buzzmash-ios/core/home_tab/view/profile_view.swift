@@ -39,16 +39,16 @@ struct profile_view: View {
                 if userVm.isLoading {
                     HStack{
                         VStack (alignment: .leading, spacing: 20){
-                            Color.gray
+                            ShimmerEffectBox()
                                 .frame(width: 70, height: 70)
                                 .clipShape(Circle())
                             
                             VStack(alignment: .leading){
-                                   Text("")
-                                    Text( "").font(.footnote).foregroundStyle(.gray)
-                                Text( "").font(.footnote).foregroundStyle(.gray)
+                                ShimmerEffectBox().frame(width: 70, height: 10)
+                                ShimmerEffectBox().frame(width: 50, height: 10)
+                                ShimmerEffectBox().frame(width: 100, height: 10)
 
-                                        .fontWeight(.light)
+                                        
                                }
                             
                             
@@ -69,18 +69,18 @@ struct profile_view: View {
                                               .resizable()
                                               .aspectRatio(contentMode: .fill)
                                               .frame(width: 70, height: 70)
-                                              .clipShape(Circle()).overlay(alignment: .bottomTrailing) {
-                                                  Image(systemName: "camera.fill").font(.caption2).foregroundStyle(.white)
-                                                      .padding(6).background(.gray).clipShape(Circle())
-                                                      
-                                              }
+                                              .clipShape(Circle())
                                               
                                       } placeholder: {
-                                          Color.gray
+                                          ShimmerEffectBox()
                                               .frame(width: 70, height: 70)
                                               .clipShape(Circle())
                                       }
-                                
+                                      .overlay(alignment: .bottomTrailing) {
+                                          Image(systemName: "camera.fill").font(.caption2).foregroundStyle(.white)
+                                              .padding(6).background(.gray).clipShape(Circle())
+                                              
+                                      }
                                       .onTapGesture(perform: {
                                           showingImagePicker.toggle()
                                       })
@@ -190,7 +190,7 @@ struct DashboardView:View {
         NavigationStack{
             VStack(spacing: 20) {
                 if(userVm.getBlogDashboardIsLoading) {
-                    
+                    DashboardShimmer()
                 } else {
                     ScrollView {
                         ForEach(userVm.requiredBlogDashboard.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
@@ -203,7 +203,7 @@ struct DashboardView:View {
                                             .clipped()
                                         
                                     } placeholder: {
-                                        Rectangle().foregroundStyle(.gray.opacity(0.2)) .frame(width: 100, height: 100)
+                                        ShimmerEffectBox() .frame(width: 100, height: 100)
                                     }
                                 }
                             

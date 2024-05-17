@@ -107,7 +107,17 @@ struct DetailBlog: View {
                 
                 
                 if blogVM.getCommentisLoading {
-                    ProgressView()
+                    HStack{
+                        ShimmerEffectBox().frame(width: 100 ,height: 20)
+                        Spacer()
+                    }.padding(.leading)
+                    HStack{
+                        ShimmerEffectBox().frame(height: 20)
+                        Spacer()
+                    }.padding()
+                    CommentShimmer()
+                  
+                    
                 } else {
                     HStack {
                         Text("Comments(\(blogVM.requiredComment.count))").bold()

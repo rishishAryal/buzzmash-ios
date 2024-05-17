@@ -59,7 +59,7 @@ struct FeedView:View {
                     Spacer()
                 }
                 if(appInitVM.getBlogCategoryIsLoading) {
-                    ProgressView()
+                    CategoryShimmer()
                 } else {
                     
                     ScrollView(.horizontal, showsIndicators: false) {
@@ -147,7 +147,7 @@ struct FeedView:View {
                 }
                
                     if (blogVM.getBlogFeedIsLoading){
-                        ProgressView()
+                        FeedShimmer()
                     } else {
                        
                         ScrollView {
@@ -178,7 +178,7 @@ struct FeedView:View {
                                                                   .clipShape(Circle())
                                                                   
                                                           } placeholder: {
-                                                              Color.gray
+                                                              ShimmerEffectBox()
                                                                   .frame(width: 15, height: 15)
                                                                   .clipShape(Circle())
                                                           }
@@ -230,7 +230,7 @@ struct FeedView:View {
                                                               .clipShape(Rectangle())
                                                               
                                                       } placeholder: {
-                                                          Color.gray
+                                                          ShimmerEffectBox()
                                                               .frame(width: 50, height: 50)
                                                       }
                                                       
