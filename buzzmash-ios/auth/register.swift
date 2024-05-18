@@ -14,6 +14,14 @@ struct register: View {
     @State var username:String = ""
     @State private var birthDate = Date.now
     @ObservedObject var authVm:AuthViewModel
+    
+    @State var showUsernameExistAlert:Bool = false
+    @State var showEmailExistAlert:Bool = false
+    
+    @State var ifUsernameExist:Bool = false
+    @State var ifEmailExist:Bool = false
+    
+
 
     var body: some View {
         
@@ -23,20 +31,61 @@ struct register: View {
                     .font(.title).bold()
             }
             VStack(spacing: 20){
-                
+      
+             
+                TextField("Enter Name", text: $name)
+                    .padding(10)
+                    .background(RoundedRectangle(cornerRadius: 10).stroke())
+                    .padding(.horizontal)
+                TextField("Enter Username", text: $username)
+                    .padding(10)
+                    .background(RoundedRectangle(cornerRadius: 10).stroke())
+                    .padding(.horizontal).onChange(of: username) {newVal in
+                        
+                        if newVal.count>3 {
+                            authVm.checkUsername(username: newVal) { isAvailable, isSuccess in
+                                if isSuccess {
+                                    showUsernameExistAlert = true
+                                    ifUsernameExist = isAvailable
+                                    
+                                }
+                            }
+                            
+                            
+                        } else {
+                            showUsernameExistAlert = false
+                        }
+                        
+                    }
+                if showUsernameExistAlert {
+                    Text(ifUsernameExist ?  "You can use this username!" : "You cannot use this username!")
+                        .foregroundStyle(ifUsernameExist ? .green : .red )
+                }
                 TextField("Enter Email", text: $email)
                     .padding(7)
                     .background(RoundedRectangle(cornerRadius: 10).stroke())
                     .padding(.horizontal)
-                    
-                TextField("Enter Name", text: $name)
-                    .padding(7)
-                    .background(RoundedRectangle(cornerRadius: 10).stroke())
-                    .padding(.horizontal)
-                TextField("Enter Username", text: $username)
-                    .padding(7)
-                    .background(RoundedRectangle(cornerRadius: 10).stroke())
-                    .padding(.horizontal)
+                    .onChange(of: email) { newVal in
+                        
+                        if newVal.count>3 {
+                            authVm.checkEmail(email: newVal) { isAvailable, isSuccess in
+                                if isSuccess {
+                                    showEmailExistAlert = true
+                                    ifEmailExist = isAvailable
+                                    
+                                }
+                            }
+                            
+                            
+                        } else {
+                            showEmailExistAlert = false
+                        }
+                    }
+                if showEmailExistAlert {
+                    Text(ifEmailExist ?  "You can use this email!" : "You cannot use this email!")
+                        .foregroundStyle(ifEmailExist ? .green : .red )
+                }
+                
                 DatePicker(selection: $birthDate, in: ...Date.now, displayedComponents: .date) {
                              Text("Birth Date")
                         .padding(.horizontal)
@@ -45,7 +94,7 @@ struct register: View {
 //                Text("Date is \(birthDate.toFormattedString())")
 
                 TextField("Enter Password", text: $password)
-                    .padding(7)
+                    .padding(10)
                     .background(RoundedRectangle(cornerRadius: 10).stroke())
                     .padding(.horizontal)
                 

@@ -13,7 +13,8 @@ protocol AuthApiServiceRepoProtocol {
     func login(email: String, password:String, resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
     func changePassword(oldPassword: String, newPassword:String, resultHandler: @escaping (_ responseData: ResposeData<ChangePasswordModel?>) -> ())
     func register(email: String, password:String, username:String,name:String,DOB:String,resultHandler: @escaping (_ responseData: ResposeData<AuthModel?>) -> ())
-
+    func checkUsername( username:String,resultHandler: @escaping (_ responseData: ResposeData<CheckEmailOrUsername?>) -> ())
+    func checkEmail( email:String,resultHandler: @escaping (_ responseData: ResposeData<CheckEmailOrUsername?>) -> ())
     
 
     
@@ -44,6 +45,12 @@ final class AuthApiServiceRepo:AuthApiServiceRepoProtocol {
     }
     func register(email: String, password: String, username: String, name: String, DOB: String, resultHandler: @escaping (ResposeData<AuthModel?>) -> ()) {
         self.authService.register(email: email, password: password, username: username, name: name, DOB: DOB, resultHandler: resultHandler)
+    }
+    func checkUsername( username:String,resultHandler: @escaping (_ responseData: ResposeData<CheckEmailOrUsername?>) -> ()) {
+        self.authService.checkUsername(username: username, resultHandler: resultHandler)
+    }
+    func checkEmail( email:String,resultHandler: @escaping (_ responseData: ResposeData<CheckEmailOrUsername?>) -> ()) {
+        self.authService.checkEmail(email: email, resultHandler: resultHandler)
     }
     
     

@@ -25,6 +25,15 @@ class AuthViewModel:ObservableObject {
     @Published var registerResponseMessage:String =  ""
     @Published var register:AuthModel?
     
+    @Published var isCheckEmailLoading:Bool = false
+    @Published var  isCheckEmailResponseMessage:String =  ""
+    @Published var  isCheckEmail:CheckEmailOrUsername?
+    
+    @Published var isCheckUsernameLoading:Bool = false
+    @Published var  isCheckUsernameResponseMessage:String =  ""
+    @Published var  isCheckUsername:CheckEmailOrUsername?
+    
+    
     final var authRepo:AuthApiServiceRepo
     
     init( authRepo: AuthApiServiceRepo) {
@@ -153,6 +162,51 @@ class AuthViewModel:ObservableObject {
             } else {
                 self.isChangePasswordLoading = false
                 completion(true)
+            }
+        }
+    }
+    
+    
+    func checkUsername(username:String, completion: @escaping(_ isAvailable:Bool, _ isSuccess: Bool)->()) {
+        self.isCheckUsernameLoading = true
+        self.authRepo.checkUsername(username: username) { response in
+            self.isCheckUsername = response.responseData
+            if(response.errorMessage != "" || !response.isSucess){
+                self.isCheckUsernameResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.isCheckUsernameLoading = false
+                    self.isCheckUsernameResponseMessage = ""
+                   
+                    completion(false, false)
+
+                    
+                }
+            } else {
+                completion(self.isCheckUsername!.isAvailable , true)
+                self.isCheckUsernameLoading = false
+                
+            }
+        }
+    }
+    
+    func checkEmail(email:String, completion: @escaping(_ isAvailable:Bool, _ isSuccess: Bool)->()) {
+        self.isCheckUsernameLoading = true
+        self.authRepo.checkEmail(email: email) { response in
+            self.isCheckEmail = response.responseData
+            if(response.errorMessage != "" || !response.isSucess){
+                self.isCheckEmailResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.isCheckEmailLoading = false
+                    self.isCheckEmailResponseMessage = ""
+                   
+                    completion(false, false)
+
+                    
+                }
+            } else {
+                completion(self.isCheckEmail!.isAvailable , true)
+                self.isCheckEmailLoading = false
+                
             }
         }
     }

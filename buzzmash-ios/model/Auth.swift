@@ -47,3 +47,9 @@ struct ChangePasswordModel: Codable {
     let message: String
     let success: Bool
 }
+
+
+struct CheckEmailOrUsername: Codable {
+    let message: String
+    let isAvailable: Bool
+}

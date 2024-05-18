@@ -18,6 +18,8 @@ class ApiUrl {
     static let getUserBlogs = baseUrl + "blog/getUserBlogs"
     static let login = baseUrl + "user/login"
     static let register = baseUrl + "user/register"
+    static let checkEmailExist = baseUrl + "user/checkEmail"
+    static let checkUsernameExist = baseUrl + "user/checkUsername"
     static let changePassword = baseUrl + "user/changePassword"
     static let updateProfile = baseUrl + "user/updateProfile"
     static let fetchProfile = baseUrl + "user/profile"
