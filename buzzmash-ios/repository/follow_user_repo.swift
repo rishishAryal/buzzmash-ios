@@ -9,11 +9,15 @@ import Foundation
 protocol FollowServiceRepoProtocol {
     func follow(following:String,resultHandler: @escaping (_ responseData: ResposeData<FollowUnfollowModel?>) -> ())
     func unfollow(following:String,resultHandler: @escaping (_ responseData: ResposeData<FollowUnfollowModel?>) -> ())
+    func getFollowers(resultHandler: @escaping (_ responseData: ResposeData<UserFollowerModel?>) -> ())
+    func getFollowings(resultHandler: @escaping (_ responseData: ResposeData<UserFollowingModel?>) -> ())
 
 }
 
 
 class FollowServiceRepo:FollowServiceRepoProtocol {
+    
+    
     
     var followService:FollowService
     
@@ -26,6 +30,14 @@ class FollowServiceRepo:FollowServiceRepoProtocol {
     }
     func unfollow(following: String, resultHandler: @escaping (ResposeData<FollowUnfollowModel?>) -> ()) {
         self.followService.unfollow(following: following, resultHandler: resultHandler)
+    }
+    
+    func getFollowers(resultHandler: @escaping (ResposeData<UserFollowerModel?>) -> ()) {
+        self.followService.getFollowers(resultHandler: resultHandler)
+    }
+    
+    func getFollowings(resultHandler: @escaping (ResposeData<UserFollowingModel?>) -> ()) {
+        self.followService.getFollowings(resultHandler: resultHandler)
     }
     
 }

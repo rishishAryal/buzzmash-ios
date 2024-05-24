@@ -12,6 +12,7 @@ struct FeedView:View {
     @State var selectedId:String = "All"
     @Namespace var namesapce
     @ObservedObject var authVm: AuthViewModel
+    @State var isFollowingFeed:Bool = false
     
     var appInitVM:AppInitVM = AppInitVM.appInitVM
     
@@ -55,114 +56,30 @@ struct FeedView:View {
             VStack {
                 HStack{
                     Spacer()
-                    Text("Buzzmash")
+                    Text("Following").foregroundStyle(isFollowingFeed ? .blue : .text).onTapGesture {
+                        if let feed = blogVM.followingFeedMap["feed"] {
+                            blogVM.requiredFollowingFeed = feed
+                        } else {
+                            blogVM.getFeedOfFollowing()
+                        }
+                       
+                        isFollowingFeed = true
+                    }
+                    Rectangle().frame(width: 1, height: 10)
+                    Text("Explore").foregroundStyle(!isFollowingFeed ? .blue : .text).onTapGesture {
+                        isFollowingFeed = false
+                    }
                     Spacer()
                 }
-                if(appInitVM.getBlogCategoryIsLoading) {
-                    CategoryShimmer()
-                } else {
-                    
-                    ScrollView(.horizontal, showsIndicators: false) {
-                        
-                        
-                        HStack {
-                            VStack(spacing: 5) {
-                                Text("All").bold()
-                                if (selectedId == "All"){
-                                    Rectangle().frame(height: 3)
-                                        .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
-                                }
-                                else {
-                                    Rectangle().frame(height: 3) .foregroundStyle(.clear)
-                                }
-                                
-                            }.onTapGesture(perform: {
-                                withAnimation {
-                                    selectedId = "All"
-                                    
-                                    if let feed = blogVM.categoryFeedMap[selectedId] {
-                                        if feed.isEmpty {
-                                            blogVM.getFeed { Bool in
-                                                
-                                            }
-                                        } else {
-                                            blogVM.requiredBlogFeed = feed
-
-                                        }
-                                    } else {
-                                        blogVM.getFeed { Bool in
-                                            
-                                        }
-                                    }
-                                   
-                                   
-                                }
-                               
-                            })
-                            ForEach(appInitVM.requiredBlogCategory, id: \.id){cat in
-                                
-                                
-                                
-                                VStack(spacing: 5) {
-                                    Text(cat.name).bold()
-                                    if (selectedId == cat.name){
-                                        Rectangle().frame(height: 3)
-                                            .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
-                                    }
-                                    else {
-                                        Rectangle().frame(height: 3) .foregroundStyle(.clear)
-                                    }
-                                    
-                                }
-                                .onTapGesture(perform: {
-                                    withAnimation {
-                                        selectedId = cat.name
-                                        
-                                        if let feed = blogVM.categoryFeedMap[cat.name] {
-                                            if feed.isEmpty {
-                                                blogVM.getFeedByCategory(category: cat.name) { Bool in
-                                                    
-                                                }
-                                            } else {
-                                                blogVM.requiredBlogFeed = feed
-                                            }
-                                        } else {
-                                            blogVM.getFeedByCategory(category: cat.name) { Bool in
-                                                
-                                            }
-                                        }
-                                      
-
-                                    }
-                                })
-                                
-                                
-                               
-                               
-                            }
-                        }.padding()
-                       
-                    }.padding().background(.gray.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.horizontal)
-                  
-                }
-               
-                    if (blogVM.getBlogFeedIsLoading){
+                
+                if isFollowingFeed {
+                    if (blogVM.followingFeedIsLoading) {
                         FeedShimmer()
                     } else {
-                       
-                        ScrollView {
-                            
-                            if blogVM.requiredBlogFeed.count == 0 {
-                                Text("No Blog of this category").padding(.top,50)
-                            }
-                            
-                            ForEach(blogVM.requiredBlogFeed.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
-                                
-                              
+                        ScrollView{
+                            ForEach(blogVM.requiredFollowingFeed.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id){blog in
                                 
                                 NavigationLink {
-//                                    DetailBlog(blogId: blog.id, profileImage: blog.authorProfile, author: blog.author, date: formatDateString(blog.createdAt), category: blog.category, title: blog.title, desc: blog.description ,blogVM: blogVM)
-                                    
                                     DetailBlog(blogId: blog.id, profileImage: blog.authorProfile, author: blog.author, date: formatDateString(blog.createdAt), category: blog.category, title: blog.title, desc: blog.description, thumbnail: blog.thumbnail, blogVM: blogVM)
                                 } label: {
                                     VStack {
@@ -208,6 +125,12 @@ struct FeedView:View {
                                                             blogVM.requiredBlogFeed[index].hasLiked.toggle()
                                                             blogVM.requiredBlogFeed[index].likeCount += (blogVM.requiredBlogFeed[index].hasLiked ? 1 : -1)
                                                         }
+                                                        
+                                                        if let index = blogVM.requiredFollowingFeed.firstIndex(where: { $0.id == blog.id }) {
+                                                            blogVM.requiredFollowingFeed[index].hasLiked.toggle()
+                                                            blogVM.requiredFollowingFeed[index].likeCount += (blogVM.requiredFollowingFeed[index].hasLiked ? 1 : -1)
+                                                        }
+
                                                     }
                                                 }
                                             } label: {
@@ -248,49 +171,255 @@ struct FeedView:View {
                                         Rectangle().frame( height: 1).foregroundStyle(.gray.opacity(0.5))
                                     }
                                 }
-
-                                
-                          
-                                    
-                                
-
                                 
                                 
                             }
-                        }
-                        
-                        
-                        .refreshable {
-                            if selectedId == "All"
-                            {
-                                blogVM.getFeed { Bool in
-                                    
-                                }
-                            } else {
-                                blogVM.getFeedByCategory(category: selectedId) { _ in
-                                    
-                                }
-                            }
-                           
+                        }.refreshable {
+                            blogVM.getFeedOfFollowing()
                         }
                     }
-                
-                
-        Spacer()
-                
-                
-            }.onAppear {
-                if (authVm.isUserLogin)
-                {
-                    if !blogVM.feedApiHited {
-                        blogVM.getFeed() {_ in
+                } else {
+                    VStack{
+                        if(appInitVM.getBlogCategoryIsLoading) {
+                            CategoryShimmer()
+                        } else {
                             
-                            
+                            ScrollView(.horizontal, showsIndicators: false) {
+                                
+                                
+                                HStack {
+                                    VStack(spacing: 5) {
+                                        Text("All").bold()
+                                        if (selectedId == "All"){
+                                            Rectangle().frame(height: 3)
+                                                .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
+                                        }
+                                        else {
+                                            Rectangle().frame(height: 3) .foregroundStyle(.clear)
+                                        }
+                                        
+                                    }.onTapGesture(perform: {
+                                        withAnimation {
+                                            selectedId = "All"
+                                            
+                                            if let feed = blogVM.categoryFeedMap[selectedId] {
+                                                if feed.isEmpty {
+                                                    blogVM.getFeed { Bool in
+                                                        
+                                                    }
+                                                } else {
+                                                    blogVM.requiredBlogFeed = feed
+
+                                                }
+                                            } else {
+                                                blogVM.getFeed { Bool in
+                                                    
+                                                }
+                                            }
+                                           
+                                           
+                                        }
+                                       
+                                    })
+                                    ForEach(appInitVM.requiredBlogCategory, id: \.id){cat in
+                                        
+                                        
+                                        
+                                        VStack(spacing: 5) {
+                                            Text(cat.name).bold()
+                                            if (selectedId == cat.name){
+                                                Rectangle().frame(height: 3)
+                                                    .foregroundStyle(.green).matchedGeometryEffect(id: "category", in: namesapce)
+                                            }
+                                            else {
+                                                Rectangle().frame(height: 3) .foregroundStyle(.clear)
+                                            }
+                                            
+                                        }
+                                        .onTapGesture(perform: {
+                                            withAnimation {
+                                                selectedId = cat.name
+                                                
+                                                if let feed = blogVM.categoryFeedMap[cat.name] {
+                                                    if feed.isEmpty {
+                                                        blogVM.getFeedByCategory(category: cat.name) { Bool in
+                                                            
+                                                        }
+                                                    } else {
+                                                        blogVM.requiredBlogFeed = feed
+                                                    }
+                                                } else {
+                                                    blogVM.getFeedByCategory(category: cat.name) { Bool in
+                                                        
+                                                    }
+                                                }
+                                              
+
+                                            }
+                                        })
+                                        
+                                        
+                                       
+                                       
+                                    }
+                                }.padding()
+                               
+                            }.padding().background(.gray.opacity(0.4)).clipShape(RoundedRectangle(cornerRadius: 10)).padding(.horizontal)
+                          
                         }
+                       
+                            if (blogVM.getBlogFeedIsLoading){
+                                FeedShimmer()
+                            } else {
+                               
+                                ScrollView {
+                                    
+                                    if blogVM.requiredBlogFeed.count == 0 {
+                                        Text("No Blog of this category").padding(.top,50)
+                                    }
+                                    
+                                    ForEach(blogVM.requiredBlogFeed.sorted(by: {convertToDate(from: $0.createdAt)! > convertToDate(from: $1.createdAt)! }), id: \.id) {blog in
+                                        
+                                      
+                                        
+                                        NavigationLink {
+                                            DetailBlog(blogId: blog.id, profileImage: blog.authorProfile, author: blog.author, date: formatDateString(blog.createdAt), category: blog.category, title: blog.title, desc: blog.description, thumbnail: blog.thumbnail, blogVM: blogVM)
+                                        } label: {
+                                            VStack {
+                                                HStack {
+                                                 
+                                                       
+                                                        if !blog.authorProfile.isEmpty {
+                                                            AsyncImage(url: URL(string: blog.authorProfile)) { image in
+                                                                      image
+                                                                          .resizable()
+                                                                          .aspectRatio(contentMode: .fill)
+                                                                          .frame(width: 15 ,height: 15)
+                                                                          .clipShape(Circle())
+                                                                          
+                                                                  } placeholder: {
+                                                                      ShimmerEffectBox()
+                                                                          .frame(width: 15, height: 15)
+                                                                          .clipShape(Circle())
+                                                                  }
+                                                                  
+                                                        }
+
+                                                        Text(" By \(blog.author)").font(.footnote)
+                                                    Text("in").font(.footnote).fontWeight(.light).foregroundStyle(.gray)
+                                                    Text("\(blog.category)").font(.footnote)
+
+                                                        
+                                                    
+                                                    
+                                                    Spacer()
+                                                    Text(formatDateString(blog.createdAt)).foregroundStyle(.gray).font(.footnote)
+                                                    
+                                                }.padding(.horizontal)
+                                                
+                                                
+                                           
+                                                HStack {
+                                                    Button {
+                                                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
+                                                        blogVM.likeunlikeBlog(blogId: blog.id) { success in
+                                                            if success {
+                                                                if let index = blogVM.requiredBlogFeed.firstIndex(where: { $0.id == blog.id }) {
+                                                                    blogVM.requiredBlogFeed[index].hasLiked.toggle()
+                                                                    blogVM.requiredBlogFeed[index].likeCount += (blogVM.requiredBlogFeed[index].hasLiked ? 1 : -1)
+                                                                }
+                                                                if let index = blogVM.requiredFollowingFeed.firstIndex(where: { $0.id == blog.id }) {
+                                                                    blogVM.requiredFollowingFeed[index].hasLiked.toggle()
+                                                                    blogVM.requiredFollowingFeed[index].likeCount += (blogVM.requiredFollowingFeed[index].hasLiked ? 1 : -1)
+                                                                }
+
+                                                            }
+                                                        }
+                                                    } label: {
+                                                        
+                                                        VStack(alignment: .center){
+                                                            Image(systemName: blog.hasLiked ? "arrowshape.up.fill" : "arrowshape.up").foregroundStyle(blog.hasLiked ? .red : .gray).font(.footnote)
+                                                            Text("\(blog.likeCount)").foregroundStyle(.gray).font(.footnote)
+                                                        }
+                                                    }
+                                                    Text(blog.title).bold().multilineTextAlignment(.leading)
+                                                    
+                                                   Spacer()
+                                                    
+                                                    if !blog.thumbnail.isEmpty {
+                                                        AsyncImage(url: URL(string: blog.thumbnail)) { image in
+                                                                  image
+                                                                      .resizable()
+                                                                      .aspectRatio(contentMode: .fill)
+                                                                      .frame(width: 50, height: 50)
+                                                                      .clipShape(Rectangle())
+                                                                      
+                                                              } placeholder: {
+                                                                  ShimmerEffectBox()
+                                                                      .frame(width: 50, height: 50)
+                                                              }
+                                                              
+                                                    } else {
+                                                        Color.clear
+                                                            .frame(width: 50, height: 50)
+                                                    }
+                                                }.padding(.horizontal)
+                                           
+                                              
+                                                
+                                    
+                                                
+                                            }.foregroundStyle(Color.text).padding(.vertical).overlay(alignment: .bottom) {
+                                                Rectangle().frame( height: 1).foregroundStyle(.gray.opacity(0.5))
+                                            }
+                                        }
+
+                                        
+                                  
+                                            
+                                        
+
+                                        
+                                        
+                                    }
+                                }
+                                
+                                
+                                .refreshable {
+                                    if selectedId == "All"
+                                    {
+                                        blogVM.getFeed { Bool in
+                                            
+                                        }
+                                    } else {
+                                        blogVM.getFeedByCategory(category: selectedId) { _ in
+                                            
+                                        }
+                                    }
+                                   
+                                }
+                            }
+                        
+                        
+                Spacer()
+                        
+                    }.onAppear {
+                        if (authVm.isUserLogin)
+                        {
+                            if !blogVM.feedApiHited {
+                                blogVM.getFeed() {_ in
+                                    
+                                    
+                                }
+                            }
+                        }
+                     
+                      
                     }
                 }
-             
-              
+                
+           
+                Spacer()
             }
         }
 

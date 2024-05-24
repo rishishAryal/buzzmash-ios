@@ -13,6 +13,7 @@ struct profile_view: View {
     
     @ObservedObject var userVm:UserViewModel
     @ObservedObject var blogVM:BlogViewModel
+    @ObservedObject var followVM:FollowViewModel
     @State var showingImagePicker:Bool = false
     @State private var inputImage: UIImage?
     @State private var imageToShow: Image?
@@ -161,14 +162,29 @@ struct profile_view: View {
                             
                         }
                         HStack {
-                            VStack{
-                                Text("\(String((userVm.profile?.profile.followingCount) ?? 0))").bold()
-                                Text("Followings").font(.caption)
+                            
+                            NavigationLink {
+                                FollowersFollowingView(followVM: followVM, selected: .following).navigationBarBackButtonHidden()
+                            } label: {
+                                VStack{
+                                    Text("\(String((userVm.profile?.profile.followingCount) ?? 0))").bold()
+                                    Text("Followings").font(.caption)
+                                }.foregroundStyle(.text)  
                             }
-                            VStack{
-                                Text("\(String((userVm.profile?.profile.followerCount)!))").bold()
-                                Text("Followers").font(.caption)
+
+                            NavigationLink {
+                                FollowersFollowingView(followVM: followVM, selected: .followers).navigationBarBackButtonHidden()
+
+                            } label: {
+                                VStack{
+                                    Text("\(String((userVm.profile?.profile.followerCount)!))").bold()
+                                    Text("Followers").font(.caption)
+                                }.foregroundStyle(.text)
                             }
+
+                            
+                           
+                           
                         }
                         Spacer()
                     }.padding().background(.gray.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 10))

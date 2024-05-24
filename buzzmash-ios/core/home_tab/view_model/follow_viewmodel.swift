@@ -17,6 +17,18 @@ class FollowViewModel:ObservableObject {
     @Published var isUnfollowResponseMessage:String = ""
     @Published var unfollowData:FollowUnfollowModel?
     
+    @Published var followingLoading:Bool = false
+    @Published var followinResponseMessage:String = ""
+    @Published var followingData:UserFollowingModel?
+    @Published var requiredFollowingData:[Following] = []
+    
+    @Published var followerLoading:Bool = false
+    @Published var followerResponseMessage:String = ""
+    @Published var followerData:UserFollowerModel?
+    @Published var requiredFollowerData:[Follower] = []
+    
+    @Published var followerMap:[String: [Follower]] = [:]
+    @Published var followingMap:[String: [Following]] = [:]
     
     
     final var followRepo:FollowServiceRepo
@@ -75,6 +87,44 @@ class FollowViewModel:ObservableObject {
     }
     
     
+    func getFollowers(){
+        self.followerLoading = true
+        self.followRepo.getFollowers { response in
+            self.followerData = response.responseData
+            if(response.errorMessage != "" || !response.isSucess){
+                self.followerResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                    self.followerResponseMessage = ""
+                    self.followerLoading = false
+                    
+                }
+            } else {
+                self.requiredFollowerData = self.followerData?.followers ?? []
+                self.followerMap["follower"] = self.followerData?.followers ?? []
+                self.followerLoading = false
+                
+            }
+        }
+    }
     
+    func getFollowings(){
+        self.followingLoading = true
+        self.followRepo.getFollowings { response in
+            self.followingData = response.responseData
+            if(response.errorMessage != "" || !response.isSucess){
+                self.followinResponseMessage = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 2){
+                    self.followinResponseMessage = ""
+                    self.followingLoading = false
+                    
+                }
+            } else {
+                self.requiredFollowingData = self.followingData?.following ?? []
+                self.followingMap["following"] = self.followingData?.following ?? [] 
+                self.followingLoading = false
+                
+            }
+        }
+    }
     
 }

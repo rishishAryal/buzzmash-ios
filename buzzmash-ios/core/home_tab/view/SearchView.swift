@@ -118,10 +118,7 @@ struct SearchView: View {
                 
             }
         }
-        .onDisappear {
-            searchVM.requiredSearchuser = []
-            search = ""
-        }
+      
     }
 }
 

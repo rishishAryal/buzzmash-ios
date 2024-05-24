@@ -52,8 +52,16 @@ class BlogViewModel:ObservableObject {
     @Published var updateCommentResponse:String = ""
     @Published var updateComment:UpdateComment?
 
-    @Published var feedApiHited:Bool = false
+    @Published var followingFeedIsLoading:Bool = false
+    @Published var getFollowingFeed:BlogFeed?
+    @Published var followingFeedResponse:String = ""
+    @Published var requiredFollowingFeed:[Blog] = []
     
+    
+    
+    
+    @Published var feedApiHited:Bool = false
+    @Published var followingFeedMap:[String: [Blog]] = [:]
     
     
     
@@ -110,6 +118,31 @@ class BlogViewModel:ObservableObject {
              
                 self.getBlogFeedIsLoading = false
                 completion(true)
+            }
+        }
+        
+    }
+    
+    
+    func getFeedOfFollowing(){
+        self.followingFeedIsLoading = true
+        self.blogRepo.getBlogFeedOfFollowed { response in
+            self.getFollowingFeed = response.responseData
+            if(response.errorMessage != "" || !response.isSucess) {
+                
+                self.followingFeedResponse = response.errorMessage
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
+                    self.followingFeedResponse = ""
+                    self.followingFeedIsLoading = false
+                    
+
+                    
+                }
+                
+            } else {
+                self.requiredFollowingFeed = self.getFollowingFeed?.blogs ?? []
+                self.followingFeedMap["feed"] = self.getFollowingFeed?.blogs ?? []
+                self.followingFeedIsLoading = false
             }
         }
         

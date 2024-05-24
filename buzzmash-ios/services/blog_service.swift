@@ -20,8 +20,8 @@ protocol BlogApiServiceProtocol {
     func postCommen(blogId: String, comment:String,resultHandler: @escaping (_ responseData: ResposeData<PostComment?>) -> () )
     func deleteComment(commentId:String,resultHandler: @escaping (_ responseData: ResposeData<DeleteComment?>) -> ())
     func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ())
-
-
+    func getBlogFeedOfFollowed(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
+    
 //    func addBlogThumbnail()
 
 
@@ -29,6 +29,8 @@ protocol BlogApiServiceProtocol {
 
 
 final class BlogApiService:BlogApiServiceProtocol {
+    
+    
 
     
 
@@ -51,7 +53,7 @@ final class BlogApiService:BlogApiServiceProtocol {
     private var cancellable: AnyCancellable?
     @Published var blogCategory:GetBlogCategory?
     @Published var blogFeed:BlogFeed?
-    
+    @Published var blogFeedofFollower:BlogFeed?
     @Published var newBlog:NewBlog?
     @Published var updateBlog:UpdatedBlog?
     @Published var blogFeedByCategory:GetBlogByCategory?
@@ -121,6 +123,37 @@ final class BlogApiService:BlogApiServiceProtocol {
             print("The file could not be loaded")
         }
         
+    }
+    
+    
+    func getBlogFeedOfFollowed(resultHandler: @escaping (ResposeData<BlogFeed?>) -> ()) {
+        guard let url = URL(string: ApiUrl.getFeedOfFollowedUser) else {
+            print("Invalid URL")
+            return
+            
+           
+        }
+        
+        do {
+            cancellable = try NetworkingManager.HandleAllUrlRequest(networkCallType: NetworkManagerEnum.get, url: url  )
+                .decode(type: BlogFeed.self, decoder: JSONDecoder())
+                .receive(on: DispatchQueue.main)
+                .sink(receiveCompletion: { (completion) in
+                    switch completion {
+                    case .finished:
+                        break
+                    case .failure(let error):
+                        
+                        resultHandler(ResposeData<BlogFeed?>(isLoading: false, errorMessage: String(error.localizedDescription), isSucess: false, responseData: nil))
+                    }
+                }, receiveValue: { [weak self] (receivedData) in
+                    self?.blogFeedofFollower = receivedData
+                   print("data recieved is \(receivedData)")
+                    resultHandler(ResposeData<BlogFeed?>(isLoading: false, errorMessage: "", isSucess: true, responseData: self?.blogFeedofFollower ))
+                })
+        } catch {
+            print("The file could not be loaded")
+        }
     }
     func createBlog(title: String, description: String, category: String, resultHandler: @escaping (ResposeData<NewBlog?>) -> ()) {
         guard let url = URL(string: ApiUrl.createBlog) else {

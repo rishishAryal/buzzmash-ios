@@ -63,7 +63,7 @@ struct HomeTab: View {
 
                         Text("Blog")
                     }
-                    profile_view(authVm: authVm, userVm: userVm, blogVM: blogVM)
+                    profile_view(authVm: authVm, userVm: userVm, blogVM: blogVM, followVM: followVM)
                       
                 .tabItem {
                 

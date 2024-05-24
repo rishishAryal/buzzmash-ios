@@ -30,6 +30,11 @@ class ApiUrl {
     static let searchUser = baseUrl + "user/search"
     static let follow = baseUrl + "user/follow"
     static let unfollow = baseUrl + "user/unfollow"
+    static let getFollowers = baseUrl + "user/followers"
+    static let getFollowings = baseUrl + "user/following"
+    static let getFeedOfFollowedUser = baseUrl + "blog/getFeedOfFollowedUser"
+    
+    
    
     
 }

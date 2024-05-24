@@ -23,6 +23,7 @@ protocol BlogApiServiceRepoProtocol {
     func deleteComment(commentId:String,resultHandler: @escaping (_ responseData: ResposeData<DeleteComment?>) -> ())
     func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ())
 
+    func getBlogFeedOfFollowed(resultHandler: @escaping (_ responseData: ResposeData<BlogFeed?>) -> ())
 
 
     
@@ -30,6 +31,8 @@ protocol BlogApiServiceRepoProtocol {
 
 
 final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
+    
+    
     
     
  
@@ -87,6 +90,9 @@ final class BlogApiServiceRepo:BlogApiServiceRepoProtocol {
     }
     func updateComment(commentId:String, comment: String , resultHandler: @escaping (_ responseData: ResposeData<UpdateComment?>) -> ()) {
         self.blogApiService.updateComment(commentId: commentId, comment: comment, resultHandler: resultHandler)
+    }
+    func getBlogFeedOfFollowed(resultHandler: @escaping (ResposeData<BlogFeed?>) -> ()) {
+        self.blogApiService.getBlogFeedOfFollowed(resultHandler: resultHandler)
     }
 
 }
