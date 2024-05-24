@@ -84,7 +84,7 @@ class AuthViewModel:ObservableObject {
     
 
     
-    func loginUser(email: String, pasword:String) {
+    func loginUser(email: String, pasword:String, completion:@escaping(_ isSuccess:Bool)->()) {
         
         self.isLoginLoading = true
         
@@ -96,7 +96,7 @@ class AuthViewModel:ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
                     self.isLoginLoading = false
                     self.loginResponseMessage = ""
-
+                    completion(false)
                     
                     
                 }
@@ -104,7 +104,7 @@ class AuthViewModel:ObservableObject {
                 self.isLoginLoading = false
                 UserDefaults.standard.set(self.login!.jwtToken, forKey: ApplicationText.token)
                 UserDefaults.standard.set(self.login?.user.id, forKey: "userId")
-
+                completion(true)
                 self.isUserLogin = true
 
             }
@@ -115,7 +115,7 @@ class AuthViewModel:ObservableObject {
 
     
     
-    func registerUser(email:String,password:String,name:String,username:String,DOB:String){
+    func registerUser(email:String,password:String,name:String,username:String,DOB:String, completion:@escaping(_ isSuccess:Bool)->()){
         
         self.isRegisterLoading = true
         
@@ -127,7 +127,7 @@ class AuthViewModel:ObservableObject {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.5){
                     self.isRegisterLoading = false
                     self.registerResponseMessage = ""
-
+                    completion(false)
                     
                     
                 }
@@ -137,7 +137,7 @@ class AuthViewModel:ObservableObject {
                 UserDefaults.standard.set(self.register?.user.id, forKey: "userId")
 
                 self.isUserLogin = true
-
+                completion(true)
             }
         }
     }

@@ -14,6 +14,7 @@ struct register: View {
     @State var username:String = ""
     @State private var birthDate = Date.now
     @ObservedObject var authVm:AuthViewModel
+    @ObservedObject var userVM:UserViewModel
     
     @State var showUsernameExistAlert:Bool = false
     @State var showEmailExistAlert:Bool = false
@@ -99,7 +100,10 @@ struct register: View {
                     .padding(.horizontal)
                 
                 Button(action: {
-                    authVm.registerUser(email: email, password: password, name: name, username: username, DOB: birthDate.toFormattedString())
+                    authVm.registerUser(email: email, password: password, name: name, username: username, DOB: birthDate.toFormattedString()) {isSuccess in
+                        
+                        userVM.getUserProfile()
+                    }
                 }, label: {
                     RoundedRectangle(cornerRadius: 10).frame(height: 40).padding(.horizontal)
                         .overlay {

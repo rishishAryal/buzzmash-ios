@@ -15,14 +15,15 @@ struct UserProfile: Codable {
 
 // MARK: - Profile
 struct Profile: Codable {
+    var followerCount, followingCount: Int
     var id, name, username, email: String
-    var password: String
-    var instagram: String
-    var twitter, facebook, dob: String
+    var password, instagram, twitter, facebook: String
+    let dob: String
     var profilePicture: String
-    var v: Int
+    let v: Int
 
     enum CodingKeys: String, CodingKey {
+        case followerCount, followingCount
         case id = "_id"
         case name, username, email, password, instagram, twitter, facebook
         case dob = "DOB"
@@ -30,6 +31,7 @@ struct Profile: Codable {
         case v = "__v"
     }
 }
+
 
 
 struct ProfilePictureUpdateModel: Codable {

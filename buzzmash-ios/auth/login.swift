@@ -11,6 +11,7 @@ struct login: View {
     @State var email:String = ""
     @State var password:String = ""
     @State var openRegisterSheet:Bool = false
+    @ObservedObject var userVM:UserViewModel
     @EnvironmentObject var authVm:AuthViewModel
     var body: some View {
         
@@ -31,7 +32,10 @@ struct login: View {
                     .padding(.horizontal)
 //                risharyal5@gmail.com
                 Button(action: {
-                    authVm.loginUser(email: email, pasword: password)
+                    authVm.loginUser(email: email, pasword: password) {isSuccess in
+                        userVM.getUserProfile()
+                        
+                    }
                     
                 }, label: {
                     RoundedRectangle(cornerRadius: 10).frame(height: 40).padding(.horizontal)
@@ -57,7 +61,7 @@ struct login: View {
                     openRegisterSheet.toggle()
                 }
                 .sheet(isPresented: $openRegisterSheet) {
-                    register(authVm: authVm)
+                    register(authVm: authVm, userVM: userVM)
                 }
             }.font(.caption).padding()
                 
@@ -65,8 +69,4 @@ struct login: View {
             Spacer()
         }
     }
-}
-
-#Preview {
-    login()
 }

@@ -10,6 +10,10 @@ import SwiftUI
 struct HomeTab: View {
     @StateObject var blogVM:BlogViewModel = BlogViewModel(blogRepo: BlogApiServiceRepo(blogApiService: BlogApiService()))
     @EnvironmentObject var authVm: AuthViewModel
+    @StateObject var searchVM:SearchViewModel = SearchViewModel(searchRepo: SearchUserRepo(searchUserService: SearchUserService()))
+    @StateObject var followVM:FollowViewModel = FollowViewModel(followRepo: FollowServiceRepo(followService: FollowService()))
+//    @StateObject var userVm:UserViewModel = UserViewModel(userRepo: UserApiServiceRepo(userServiceRepo: UserApiService()))
+    @ObservedObject var userVm:UserViewModel
     
     func getProfilePictureLink()->String {
         
@@ -41,6 +45,17 @@ struct HomeTab: View {
                             Text("Home")
                         }
                     }
+                    
+                    SearchView( searchVM: searchVM, followVM: followVM, userVm: userVm )
+                        .tabItem {
+                            
+                            VStack {
+                                Image(systemName: "magnifyingglass")
+                                Text("Search")
+                            }
+                            
+                        }
+                    
                     VStack {
                         AddBlog(blogVM: blogVM)
                     }.tabItem {
@@ -48,7 +63,7 @@ struct HomeTab: View {
 
                         Text("Blog")
                     }
-                    profile_view(authVm: authVm, blogVM: blogVM)
+                    profile_view(authVm: authVm, userVm: userVm, blogVM: blogVM)
                       
                 .tabItem {
                 
@@ -65,11 +80,11 @@ struct HomeTab: View {
                     
                 }.onAppear {
                     if (authVm.isUserLogin) {
-//                        if (b)
+                        
                     }
                 }
             } else {
-                login().environmentObject(authVm)
+                login(userVM: userVm).environmentObject(authVm)
             }
         }
         
@@ -78,10 +93,6 @@ struct HomeTab: View {
        
      
     }
-}
-
-#Preview {
-    HomeTab()
 }
 
 

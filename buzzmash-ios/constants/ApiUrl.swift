@@ -27,6 +27,9 @@ class ApiUrl {
     static let getBlogByCategory = baseUrl + "blog/getBlogByCategory"
     static let likeBlog = baseUrl + "blog/like"
     static let comment = baseUrl + "blog/comment"
+    static let searchUser = baseUrl + "user/search"
+    static let follow = baseUrl + "user/follow"
+    static let unfollow = baseUrl + "user/unfollow"
    
     
 }

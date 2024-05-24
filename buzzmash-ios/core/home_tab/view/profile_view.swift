@@ -9,7 +9,9 @@ import SwiftUI
 
 struct profile_view: View {
     @ObservedObject var authVm: AuthViewModel
-    @StateObject var userVm:UserViewModel = UserViewModel(userRepo: UserApiServiceRepo(userServiceRepo: UserApiService()))
+//    @StateObject var userVm:UserViewModel = UserViewModel(userRepo: UserApiServiceRepo(userServiceRepo: UserApiService()))
+    
+    @ObservedObject var userVm:UserViewModel
     @ObservedObject var blogVM:BlogViewModel
     @State var showingImagePicker:Bool = false
     @State private var inputImage: UIImage?
@@ -53,12 +55,25 @@ struct profile_view: View {
                             
                             
                             
+                            
+                            
 
                             
                            
                             
                         }
+                     
                         Spacer()
+                        HStack {
+                            VStack{
+                                ShimmerEffectBox().frame(width: 30, height: 10)
+                                ShimmerEffectBox().frame(width: 70, height: 10)
+                            }
+                            VStack{
+                                ShimmerEffectBox().frame(width: 30, height: 10)
+                                ShimmerEffectBox().frame(width: 70, height: 10)
+                            }
+                        }
                     }.padding().background(.gray.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 10))
                 } else {
                     HStack{
@@ -144,6 +159,16 @@ struct profile_view: View {
                             
                            
                             
+                        }
+                        HStack {
+                            VStack{
+                                Text("\(String((userVm.profile?.profile.followingCount) ?? 0))").bold()
+                                Text("Followings").font(.caption)
+                            }
+                            VStack{
+                                Text("\(String((userVm.profile?.profile.followerCount)!))").bold()
+                                Text("Followers").font(.caption)
+                            }
                         }
                         Spacer()
                     }.padding().background(.gray.opacity(0.2)).clipShape(RoundedRectangle(cornerRadius: 10))

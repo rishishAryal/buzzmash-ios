@@ -87,7 +87,7 @@ struct EditProfile:View {
 
                     
                     NavigationLink {
-                        EditUserDetails(userVM: userVM).navigationTitle("Change User Details")
+                        EditUserDetails(userVm: userVM).navigationTitle("Change User Details")
                     } label: {
                         HStack(spacing: 20){
                             Image(systemName: "note.text")
@@ -174,14 +174,13 @@ struct ChangePassword:View {
 
 
 struct EditUserDetails:View {
-    @ObservedObject var userVM:UserViewModel
+    @ObservedObject var userVm:UserViewModel
 
     @State var name:String = ""
     @State var username:String = ""
     @State var insta:String = ""
     @State var twitter:String = ""
     @State var facebook:String = ""
-    
     @State var showAlert:Bool = false
     @State var alertMessage:String = "User details update"
     @State var alertColor:Color = .green
@@ -221,9 +220,9 @@ struct EditUserDetails:View {
                 
                 RoundedRectangle(cornerRadius: 10).foregroundStyle(.blue).frame(height: 50)
                     .onTapGesture(perform: {
-                        userVM.updateUserDetail(name: name, username: username, instagram: insta, facebook: facebook, twitter: twitter) { success, userData in
+                        userVm.updateUserDetail(name: name, username: username, instagram: insta, facebook: facebook, twitter: twitter) { success, userData in
                             if success {
-                                userVM.profile!.profile = userData!
+                                userVm.profile!.profile = userData!
                                 
                                 showAlert = true
                                 alertMessage = "User details update"
@@ -249,7 +248,7 @@ struct EditUserDetails:View {
                         }
                     })
                     .overlay {
-                    if userVM.isupdateUserLoading {
+                    if userVm.isupdateUserLoading {
                         ProgressView()
                     } else {
                         Text("Update Details").foregroundStyle(.white)
@@ -261,11 +260,11 @@ struct EditUserDetails:View {
             }.padding().background(.gray).clipShape(RoundedRectangle(cornerRadius: 10)).padding()
             Spacer()
         }.onAppear(perform: {
-            name = userVM.profile?.profile.name ?? ""
-            username = userVM.profile?.profile.username ?? ""
-            insta = userVM.profile?.profile.instagram ?? ""
-            twitter = userVM.profile?.profile.twitter ?? ""
-            facebook = userVM.profile?.profile.facebook ?? ""
+            name = userVm.profile?.profile.name ?? ""
+            username = userVm.profile?.profile.username ?? ""
+            insta = userVm.profile?.profile.instagram ?? ""
+            twitter = userVm.profile?.profile.twitter ?? ""
+            facebook = userVm.profile?.profile.facebook ?? ""
             
         })
     }

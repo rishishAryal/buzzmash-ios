@@ -16,14 +16,15 @@ struct AuthModel: Codable {
 
 // MARK: - User
 struct User: Codable {
-    var id, name, username, email: String
-    var password: String
-    var instagram: String
-    var twitter, facebook, dob: String
-    var profilePicture: String
-    var v: Int
+    var followerCount, followingCount: Int
+    let id, name, username, email: String
+    let password, instagram, twitter, facebook: String
+    let dob: String
+    let profilePicture: String
+    let v: Int
 
     enum CodingKeys: String, CodingKey {
+        case followerCount, followingCount
         case id = "_id"
         case name, username, email, password, instagram, twitter, facebook
         case dob = "DOB"
@@ -31,6 +32,7 @@ struct User: Codable {
         case v = "__v"
     }
 }
+
 
 
 struct UpdateUserModel: Codable {
