@@ -269,7 +269,7 @@ struct FeedView:View {
                         }
                        
                             if (blogVM.getBlogFeedIsLoading){
-                                FeedShimmer()
+                                     FeedShimmer()
                             } else {
                                
                                 ScrollView {
