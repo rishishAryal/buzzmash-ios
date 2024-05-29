@@ -50,25 +50,50 @@ struct FeedView:View {
         }
     }
     
-    
+    @Namespace var namespace
+    @State var selected:String = "Explore"
     var body: some View {
         NavigationStack{
             VStack {
                 HStack{
                     Spacer()
-                    Text("Following").foregroundStyle(isFollowingFeed ? .blue : .text).onTapGesture {
-                        if let feed = blogVM.followingFeedMap["feed"] {
-                            blogVM.requiredFollowingFeed = feed
-                        } else {
-                            blogVM.getFeedOfFollowing()
+                    Text("Following").foregroundStyle(.text).padding(5)
+                        .onTapGesture {
+                            if let feed = blogVM.followingFeedMap["feed"] {
+                                blogVM.requiredFollowingFeed = feed
+                            } else {
+                                blogVM.getFeedOfFollowing()
+                            }
+                            withAnimation {
+                                isFollowingFeed = true
+                            }
+                           
+                            
                         }
-                       
-                        isFollowingFeed = true
-                    }
+                        .overlay(alignment: .bottom) {
+                            if isFollowingFeed {
+                                Rectangle().frame(height: 1).foregroundStyle(.text)
+                                    .matchedGeometryEffect(id: "id", in: namesapce)
+
+                            }
+                        }
+                        
+                    
+                    
                     Rectangle().frame(width: 1, height: 10)
-                    Text("Explore").foregroundStyle(!isFollowingFeed ? .blue : .text).onTapGesture {
-                        isFollowingFeed = false
+                    Text("Explore").foregroundStyle(.text).padding(5)
+                        .onTapGesture {
+                            withAnimation {
+                                isFollowingFeed = false
+                            }
+                       
                     }
+                        .overlay(alignment: .bottom) {
+                            if !isFollowingFeed {
+                                Rectangle().frame(height: 1).foregroundStyle(.text)
+                                    .matchedGeometryEffect(id: "id", in: namesapce)
+                            }
+                        }
                     Spacer()
                 }
                 
@@ -82,95 +107,11 @@ struct FeedView:View {
                                 NavigationLink {
                                     DetailBlog(blogId: blog.id, profileImage: blog.authorProfile, author: blog.author, date: formatDateString(blog.createdAt), category: blog.category, title: blog.title, desc: blog.description, thumbnail: blog.thumbnail, blogVM: blogVM)
                                 } label: {
-                                    VStack {
-                                        HStack {
-                                         
-                                               
-                                                if !blog.authorProfile.isEmpty {
-                                                    AsyncImage(url: URL(string: blog.authorProfile)) { image in
-                                                              image
-                                                                  .resizable()
-                                                                  .aspectRatio(contentMode: .fill)
-                                                                  .frame(width: 15 ,height: 15)
-                                                                  .clipShape(Circle())
-                                                                  
-                                                          } placeholder: {
-                                                              ShimmerEffectBox()
-                                                                  .frame(width: 15, height: 15)
-                                                                  .clipShape(Circle())
-                                                          }
-                                                          
-                                                }
-
-                                                Text(" By \(blog.author)").font(.footnote)
-                                            Text("in").font(.footnote).fontWeight(.light).foregroundStyle(.gray)
-                                            Text("\(blog.category)").font(.footnote)
-
-                                                
-                                            
-                                            
-                                            Spacer()
-                                            Text(formatDateString(blog.createdAt)).foregroundStyle(.gray).font(.footnote)
-                                            
-                                        }.padding(.horizontal)
-                                        
-                                        
-                                   
-                                        HStack {
-                                            Button {
-                                                UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                                                blogVM.likeunlikeBlog(blogId: blog.id) { success in
-                                                    if success {
-                                                        if let index = blogVM.requiredBlogFeed.firstIndex(where: { $0.id == blog.id }) {
-                                                            blogVM.requiredBlogFeed[index].hasLiked.toggle()
-                                                            blogVM.requiredBlogFeed[index].likeCount += (blogVM.requiredBlogFeed[index].hasLiked ? 1 : -1)
-                                                        }
-                                                        
-                                                        if let index = blogVM.requiredFollowingFeed.firstIndex(where: { $0.id == blog.id }) {
-                                                            blogVM.requiredFollowingFeed[index].hasLiked.toggle()
-                                                            blogVM.requiredFollowingFeed[index].likeCount += (blogVM.requiredFollowingFeed[index].hasLiked ? 1 : -1)
-                                                        }
-
-                                                    }
-                                                }
-                                            } label: {
-                                                
-                                                VStack(alignment: .center){
-                                                    Image(systemName: blog.hasLiked ? "arrowshape.up.fill" : "arrowshape.up").foregroundStyle(blog.hasLiked ? .red : .gray).font(.footnote)
-                                                    Text("\(blog.likeCount)").foregroundStyle(.gray).font(.footnote)
-                                                }
-                                            }
-                                            Text(blog.title).bold().multilineTextAlignment(.leading)
-                                            
-                                           Spacer()
-                                            
-                                            if !blog.thumbnail.isEmpty {
-                                                AsyncImage(url: URL(string: blog.thumbnail)) { image in
-                                                          image
-                                                              .resizable()
-                                                              .aspectRatio(contentMode: .fill)
-                                                              .frame(width: 50, height: 50)
-                                                              .clipShape(Rectangle())
-                                                              
-                                                      } placeholder: {
-                                                          ShimmerEffectBox()
-                                                              .frame(width: 50, height: 50)
-                                                      }
-                                                      
-                                            } else {
-                                                Color.clear
-                                                    .frame(width: 50, height: 50)
-                                            }
-                                        }.padding(.horizontal)
-                                   
-                                      
-                                        
-                            
-                                        
-                                    }.foregroundStyle(Color.text).padding(.vertical).overlay(alignment: .bottom) {
-                                        Rectangle().frame( height: 1).foregroundStyle(.gray.opacity(0.5))
-                                    }
+                                    
+                                    FeedItem(authorProfile: blog.authorProfile, author: blog.author, category: blog.category, createdAt: blog.createdAt, blogId: blog.id, blogVM: blogVM, hasLiked: blog.hasLiked, likeCount: blog.likeCount, title: blog.title, thumbnail: blog.thumbnail)
                                 }
+                                
+                                
                                 
                                 
                             }
@@ -285,93 +226,11 @@ struct FeedView:View {
                                         NavigationLink {
                                             DetailBlog(blogId: blog.id, profileImage: blog.authorProfile, author: blog.author, date: formatDateString(blog.createdAt), category: blog.category, title: blog.title, desc: blog.description, thumbnail: blog.thumbnail, blogVM: blogVM)
                                         } label: {
-                                            VStack {
-                                                HStack {
-                                                 
-                                                       
-                                                        if !blog.authorProfile.isEmpty {
-                                                            AsyncImage(url: URL(string: blog.authorProfile)) { image in
-                                                                      image
-                                                                          .resizable()
-                                                                          .aspectRatio(contentMode: .fill)
-                                                                          .frame(width: 15 ,height: 15)
-                                                                          .clipShape(Circle())
-                                                                          
-                                                                  } placeholder: {
-                                                                      ShimmerEffectBox()
-                                                                          .frame(width: 15, height: 15)
-                                                                          .clipShape(Circle())
-                                                                  }
-                                                                  
-                                                        }
+                                            
+                                            
+                                            FeedItem(authorProfile: blog.authorProfile, author: blog.author, category: blog.category, createdAt: blog.createdAt, blogId: blog.id, blogVM: blogVM, hasLiked: blog.hasLiked, likeCount: blog.likeCount, title: blog.title, thumbnail: blog.thumbnail)
+                                            
 
-                                                        Text(" By \(blog.author)").font(.footnote)
-                                                    Text("in").font(.footnote).fontWeight(.light).foregroundStyle(.gray)
-                                                    Text("\(blog.category)").font(.footnote)
-
-                                                        
-                                                    
-                                                    
-                                                    Spacer()
-                                                    Text(formatDateString(blog.createdAt)).foregroundStyle(.gray).font(.footnote)
-                                                    
-                                                }.padding(.horizontal)
-                                                
-                                                
-                                           
-                                                HStack {
-                                                    Button {
-                                                        UIImpactFeedbackGenerator(style: .heavy).impactOccurred()
-                                                        blogVM.likeunlikeBlog(blogId: blog.id) { success in
-                                                            if success {
-                                                                if let index = blogVM.requiredBlogFeed.firstIndex(where: { $0.id == blog.id }) {
-                                                                    blogVM.requiredBlogFeed[index].hasLiked.toggle()
-                                                                    blogVM.requiredBlogFeed[index].likeCount += (blogVM.requiredBlogFeed[index].hasLiked ? 1 : -1)
-                                                                }
-                                                                if let index = blogVM.requiredFollowingFeed.firstIndex(where: { $0.id == blog.id }) {
-                                                                    blogVM.requiredFollowingFeed[index].hasLiked.toggle()
-                                                                    blogVM.requiredFollowingFeed[index].likeCount += (blogVM.requiredFollowingFeed[index].hasLiked ? 1 : -1)
-                                                                }
-
-                                                            }
-                                                        }
-                                                    } label: {
-                                                        
-                                                        VStack(alignment: .center){
-                                                            Image(systemName: blog.hasLiked ? "arrowshape.up.fill" : "arrowshape.up").foregroundStyle(blog.hasLiked ? .red : .gray).font(.footnote)
-                                                            Text("\(blog.likeCount)").foregroundStyle(.gray).font(.footnote)
-                                                        }
-                                                    }
-                                                    Text(blog.title).bold().multilineTextAlignment(.leading)
-                                                    
-                                                   Spacer()
-                                                    
-                                                    if !blog.thumbnail.isEmpty {
-                                                        AsyncImage(url: URL(string: blog.thumbnail)) { image in
-                                                                  image
-                                                                      .resizable()
-                                                                      .aspectRatio(contentMode: .fill)
-                                                                      .frame(width: 50, height: 50)
-                                                                      .clipShape(Rectangle())
-                                                                      
-                                                              } placeholder: {
-                                                                  ShimmerEffectBox()
-                                                                      .frame(width: 50, height: 50)
-                                                              }
-                                                              
-                                                    } else {
-                                                        Color.clear
-                                                            .frame(width: 50, height: 50)
-                                                    }
-                                                }.padding(.horizontal)
-                                           
-                                              
-                                                
-                                    
-                                                
-                                            }.foregroundStyle(Color.text).padding(.vertical).overlay(alignment: .bottom) {
-                                                Rectangle().frame( height: 1).foregroundStyle(.gray.opacity(0.5))
-                                            }
                                         }
 
                                         
